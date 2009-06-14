@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+* This file is part of the source of
+* 
+* Office-o-tron - a web-based ODF document validator for Java(tm)
+* 
+* Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+* 
+* This program is free software: you can redistribute it and/or modify it under the terms of
+* the GNU Affero General Public License as published by the Free Software Foundation, either
+* version 3 of the License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+* without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+* the GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License along with this
+* program. If not, see <http://www.gnu.org/licenses/>.
+-->
+    
+<web-app>
+
+  <display-name>Office-o-tron</display-name>
+  <description>See http://www.probatron.org/officeotron.html</description>
+
+  <context-param>
+    <param-name>temp-folder</param-name>
+    <param-value>C:\officeotron\</param-value>
+    <description>Where the non-web portions of the application are located</description>
+  </context-param>
+
+  <context-param>
+    <param-name>max-upload</param-name>
+    <param-value>196608</param-value>
+    <description>The base URL of the web application</description>
+  </context-param>
+
+  <servlet>
+    <servlet-name>validator</servlet-name>
+    <description>Synchronous validation of POSTED documents</description>
+    <servlet-class>org.probatron.officeotron.ValidatorServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>validator</servlet-name>
+    <url-pattern>/validator</url-pattern>
+  </servlet-mapping>
+
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+
+</web-app>
