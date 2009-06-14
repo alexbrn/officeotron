@@ -1,0 +1,6 @@
+Office-o-tron depends on the following third-party libraries:
+
+1. Jing http://code.google.com/p/jing-trang/ licensed under the New BSD License.
+
+2. Apache Commons FileUpload, log4j, and xerces-J licensed under the Apache license, version 2.
+
