@@ -1,0 +1,95 @@
+<?xml version='1.0'?>
+<!--
+ * This file is part of the source of
+ * 
+ * Office-o-tron - a web-based ODF document validator for Java(tm)
+ * 
+ * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+ * 
+ * This program is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<project name="Office-o-tron" default="war" basedir=".">
+	
+	<description>Office-o-tron Build</description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="version" value="0.1.0" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist/officeotron" />
+	<property name="etc" location="etc" />
+	<property name="lib" location="etc/lib" />
+
+
+	<target name="init">
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}/classes" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the java source">
+		<!-- Compile the java code from ${src} into ${build} -->
+
+		<javac source="1.6" srcdir="${src}" destdir="${build}/classes">
+			<classpath>
+				<pathelement location="${lib}/servlet-api.jar" />
+				<pathelement location="${lib}/commons-fileupload-1.2.1.jar" />
+				<pathelement location="${lib}/log4j-1.2.15.jar" />
+				<pathelement location="${lib}/jing.jar" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="make xmlprobe-ccs.jar">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${build}/lib" />
+		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		<jar jarfile="${build}/lib/officeotron-${version}.jar" basedir="${build}/classes" />
+	</target>
+
+
+	<target name="dist" depends="jar" description="modify Orbeon resources for use in ople">
+		<!-- Create the distro directories -->
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/WEB-INF/lib" />
+
+
+		<!-- libs -->
+
+		<copy todir="${dist}/WEB-INF/lib">
+			<fileset dir="${build}/lib/">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${dist}/WEB-INF/lib">
+			<fileset dir="${lib}/">
+				<include name="**/*.jar" />
+				<exclude name="servlet-api.jar" />
+			</fileset>
+		</copy>
+
+		<!-- web.xml -->
+		<copy file="${etc}/web.xml" todir="${dist}/WEB-INF/" />
+	</target>
+
+	<target name="war" depends="dist" description="builds WAR">
+		<war destfile="dist/officeotron-${version}.war" basedir="${dist}" webxml="${dist}/WEB-INF/web.xml" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="dist" />
+	</target>
+
+</project>
