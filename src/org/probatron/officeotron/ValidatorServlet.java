@@ -122,8 +122,10 @@ public class ValidatorServlet extends HttpServlet
             return;
         }
 
-        boolean forceIs = forceIsRequest( itemMap );
-        processDocs( candidateUuid, mft, commentary, forceIs );
+        boolean forceIs = getRequestBooleanSetting( itemMap, "force-is" );
+        boolean checkIds = getRequestBooleanSetting( itemMap, "check-ids" );
+
+        processDocs( candidateUuid, mft, commentary, forceIs, checkIds );
         cleanup( itemMap );
 
         commentary.addComment( "Total count of validity errors: " + commentary.getErrCount() );
@@ -134,14 +136,14 @@ public class ValidatorServlet extends HttpServlet
     }
 
 
-    boolean forceIsRequest( HashMap<String, UUID> itemMap )
+    boolean getRequestBooleanSetting( HashMap<String, UUID> itemMap, String name )
     {
         boolean r = false;
-        UUID uuid = itemMap.get( "force-is" );
+        UUID uuid = itemMap.get( name );
         if( uuid != null )
         {
             String s = new String( Store.getBytes( uuid ) );
-            logger.debug( "force-is setting val " + s );
+            logger.debug( name + " setting val " + s );
             r = s.equalsIgnoreCase( "true" );
         }
 
@@ -195,7 +197,7 @@ public class ValidatorServlet extends HttpServlet
 
 
     void processDocs( UUID candidateUuid, ODFPackageManifest mft, ValidationReport commentary,
-            boolean forceIs ) throws IOException
+            boolean forceIs, boolean checkIds ) throws IOException
     {
         for( int i = 0; i < mft.getItemRefs().size(); i++ )
         {
@@ -204,7 +206,8 @@ public class ValidatorServlet extends HttpServlet
             String url = "jar:" + Store.asUrlRef( candidateUuid ) + "!/" + entry;
             logger.debug( "processing " + url );
             commentary.addComment( "Processing manifest entry: " + entry );
-            ODFSniffer sniffer = new ODFSniffer();
+            commentary.incIndent();
+            ODFSniffer sniffer = new ODFSniffer( commentary, checkIds );
             XMLSniffData sd;
 
             try
@@ -219,13 +222,14 @@ public class ValidatorServlet extends HttpServlet
                 return;
             }
 
-            if( sd.getRootNs().equals( ODFSniffer.ODF_DOC_NS ) )
+            if( sd.getRootNs().equals( ODFSniffer.ODF_OFFICE_NS ) )
             {
-                String ver = Utils.getQAtt( sd.getAtts(), ODFSniffer.ODF_DOC_NS, "version" );
+                String ver = Utils.getQAtt( sd.getAtts(), ODFSniffer.ODF_OFFICE_NS, "version" );
                 logger.debug( "version is " + ver );
 
-                commentary.addComment( "Document \"" + entry + "\" has root element &lt;"
-                        + sd.getRootElementName() + ">" );
+                commentary.addComment( "It has root element named &lt;"
+                        + sd.getRootElementName() + "> in the namespace <tt>"
+                        + sd.getRootNs() + "</tt>" );
 
                 if( forceIs )
                 {
@@ -255,6 +259,7 @@ public class ValidatorServlet extends HttpServlet
                 commentary.addComment( "The generator value is: \"<b>" + sniffer.getGenerator()
                         + "</b>\"" );
             }
+            commentary.decIndent();
         }
     }
 
@@ -291,16 +296,16 @@ public class ValidatorServlet extends HttpServlet
                 candidateStream = conn.getInputStream();
                 logger.debug( "Calling validate()" );
 
-                commentary.setIndent( 4 );
+                commentary.incIndent();
                 boolean isValid = driver.validate( new InputSource( candidateStream ) );
                 logger.debug( "Errors in instance:" + h.getInstanceErrCount() );
                 if( h.getInstanceErrCount() > ODFErrorHandler.THRESHOLD )
                 {
                     commentary.addComment( "(<i>"
                             + ( h.getInstanceErrCount() - ODFErrorHandler.THRESHOLD )
-                            + " errors omitted for the sake of brevity</i>)" );
+                            + " error(s) omitted for the sake of brevity</i>)" );
                 }
-                commentary.setIndent( 0 );
+                commentary.decIndent();
 
                 if( isValid )
                 {
