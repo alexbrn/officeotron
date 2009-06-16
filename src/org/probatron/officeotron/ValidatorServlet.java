@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -48,6 +50,7 @@ import com.thaiopensource.validate.ValidationDriver;
 public class ValidatorServlet extends HttpServlet
 {
     static Logger logger = Logger.getLogger( ValidatorServlet.class );
+
     private static byte[] schema10;
     private static byte[] schema11;
     private static byte[] schema12;
@@ -108,34 +111,62 @@ public class ValidatorServlet extends HttpServlet
             return;
         }
 
-        UUID uuid = Store.putMultiPart( req.getInputStream(), req ).get( 0 );
-        ValidationReport commentary = new ValidationReport();
+        HashMap<String, UUID> itemMap = Store.putMultiPart( req );
+        UUID candidateUuid = itemMap.get( "candidate" );
 
-        ODFPackageManifest mft = doManifest( uuid, commentary );
+        ValidationReport commentary = new ValidationReport();
+        ODFPackageManifest mft = doManifest( candidateUuid, commentary );
         if( mft == null )
         {
             resp.sendError( 412, "Submitted resource must be a recognisable ODF package" );
             return;
         }
 
-        processDocs( uuid, mft, commentary );
+        boolean forceIs = forceIsRequest( itemMap );
+        processDocs( candidateUuid, mft, commentary, forceIs );
+        cleanup( itemMap );
+
         commentary.addComment( "Total count of validity errors: " + commentary.getErrCount() );
 
         resp.setCharacterEncoding( "UTF-8" );
-        resp.setContentType( "text/xml" );
+        resp.setContentType( "application/xml" );
         commentary.streamOut( resp.getOutputStream() );
-        Store.delete( uuid );
     }
 
 
-    ODFPackageManifest doManifest( UUID uuid, ValidationReport commentary )
+    boolean forceIsRequest( HashMap<String, UUID> itemMap )
+    {
+        boolean r = false;
+        UUID uuid = itemMap.get( "force-is" );
+        if( uuid != null )
+        {
+            String s = new String( Store.getBytes( uuid ) );
+            logger.debug( "force-is setting val " + s );
+            r = s.equalsIgnoreCase( "true" );
+        }
+
+        logger.debug( "force-is setting is " + r );
+        return r;
+    }
+
+
+    void cleanup( HashMap<String, UUID> itemMap )
+    {
+        Iterator<String> iter = itemMap.keySet().iterator();
+        while( iter.hasNext() )
+        {
+            Store.delete( itemMap.get( iter.next() ) );
+        }
+    }
+
+
+    ODFPackageManifest doManifest( UUID candidateUuid, ValidationReport commentary )
     {
         XMLSniffer sniffer = new XMLSniffer();
         ODFPackageManifest mft = null;
 
-        String url = Store.asUrlRef( uuid );
+        String url = Store.asUrlRef( candidateUuid );
         String manifestUrl = "jar:" + url + "!/META-INF/manifest.xml";
-        // commentary.addComment( "Sniffing package manifest at " + manifestUrl );
 
         XMLSniffData sd = null;
         try
@@ -163,14 +194,14 @@ public class ValidatorServlet extends HttpServlet
     }
 
 
-    void processDocs( UUID uuid, ODFPackageManifest mft, ValidationReport commentary )
-            throws IOException
+    void processDocs( UUID candidateUuid, ODFPackageManifest mft, ValidationReport commentary,
+            boolean forceIs ) throws IOException
     {
         for( int i = 0; i < mft.getItemRefs().size(); i++ )
         {
             String entry = mft.getItemRefs().get( i );
 
-            String url = "jar:" + Store.asUrlRef( uuid ) + "!/" + entry;
+            String url = "jar:" + Store.asUrlRef( candidateUuid ) + "!/" + entry;
             logger.debug( "processing " + url );
             commentary.addComment( "Processing manifest entry: " + entry );
             ODFSniffer sniffer = new ODFSniffer();
@@ -195,89 +226,83 @@ public class ValidatorServlet extends HttpServlet
 
                 commentary.addComment( "Document \"" + entry + "\" has root element &lt;"
                         + sd.getRootElementName() + ">" );
-                if( ver != null )
-                {
-                    commentary.addComment( "It claims to be ODF version " + ver );
 
+                if( forceIs )
+                {
+                    commentary.addComment( "WARN", "Forcing validation against ISO/IEC 26300" );
+                    ver = "1.0";
                 }
                 else
                 {
-                    commentary.addComment( "WARN",
-                            "It has no version attribute! (Assuming ODF v1.1). " );
-                    ver = "1.1";
+                    if( ver != null )
+                    {
+                        commentary.addComment( "It claims to be ODF version " + ver );
+                    }
+                    else
+                    {
+                        commentary.addComment( "WARN",
+                                "It has no version attribute! (ODF v1.1 probably intended)" );
+                        ver = "1.1";
+                    }
+
                 }
 
-                validateDoc( url, ver, commentary );
+                validateODFDoc( url, ver, commentary );
             }
 
             if( sniffer.getGenerator() != "" )
             {
-                commentary.addComment( "Found metadata for generator: \""
-                        + sniffer.getGenerator() + "\"" );
+                commentary.addComment( "The generator value is: \"<b>" + sniffer.getGenerator()
+                        + "</b>\"" );
             }
-
         }
-
     }
 
 
-    private void validateDoc( String url, String ver, ValidationReport commentary )
+    /**
+     * Validates the given ODF XML document.
+     * 
+     * @param url the URL of the candidate
+     * @param ver the version; must be "1.0", "1.1" or "1.2"
+     * @param commentary where to report the validation narrative
+     * @throws IOException
+     * @throws MalformedURLException
+     */
+    private void validateODFDoc( String url, String ver, ValidationReport commentary )
             throws IOException, MalformedURLException
     {
         logger.debug( "Beginning document validation ..." );
         synchronized( ValidatorServlet.class )
         {
-            // ValidationDriver vd = new ValidationDriver();
-            byte[] ba = null;
-            if( ver.equals( "1.0" ) )
-            {
-                ba = schema10;
-            }
-            else if( ver.equals( "1.1" ) )
-            {
-                ba = schema11;
-            }
-            else if( ver.equals( "1.2" ) )
-            {
-                ba = schema12;
-            }
-            else
-            {
-                logger.fatal( "No version found ..." );
-                return;
-            }
-            InputSource is = new InputSource( new ByteArrayInputStream( ba ) );
-            InputStream dis = null;
-
+            // Create the Jing ValidationDriver
             PropertyMapBuilder builder = new PropertyMapBuilder();
             ODFErrorHandler h = new ODFErrorHandler( commentary );
-
             ValidateProperty.ERROR_HANDLER.put( builder, h );
+            ValidationDriver driver = new ValidationDriver( builder.toPropertyMap() );
 
-            ValidationDriver vd = new ValidationDriver( builder.toPropertyMap() );
-
+            InputStream candidateStream = null;
             try
             {
-                logger.debug( "Loading schema" );
-                vd.loadSchema( is );
+                logger.debug( "Loading schema version " + ver );
+                byte[] schemaBytes = getSchemaForVersion( ver );
+                driver.loadSchema( new InputSource( new ByteArrayInputStream( schemaBytes ) ) );
+
                 URLConnection conn = new URL( url ).openConnection();
-                dis = conn.getInputStream();
+                candidateStream = conn.getInputStream();
                 logger.debug( "Calling validate()" );
 
                 commentary.setIndent( 4 );
-                boolean r = vd.validate( new InputSource( dis ) );
-
+                boolean isValid = driver.validate( new InputSource( candidateStream ) );
                 logger.debug( "Errors in instance:" + h.getInstanceErrCount() );
                 if( h.getInstanceErrCount() > ODFErrorHandler.THRESHOLD )
                 {
                     commentary.addComment( "(<i>"
                             + ( h.getInstanceErrCount() - ODFErrorHandler.THRESHOLD )
-                            + " error omitted for the sake of brevity</i>)" );
+                            + " errors omitted for the sake of brevity</i>)" );
                 }
-
                 commentary.setIndent( 0 );
 
-                if( r == true )
+                if( isValid )
                 {
                     commentary.addComment( "The document is valid" );
                 }
@@ -288,18 +313,40 @@ public class ValidatorServlet extends HttpServlet
             }
             catch( SAXException e )
             {
+                commentary.addComment( "FATAL", "The resource is not conformant XML: "
+                        + e.getMessage() );
                 logger.error( e.getMessage() );
             }
             finally
             {
-                if( dis != null )
-                {
-                    dis.close();
-                }
-
+                Utils.streamClose( candidateStream );
             }
         }
 
+    }
+
+
+    private byte[] getSchemaForVersion( String ver )
+    {
+        byte[] schemaBytes = null;
+        if( ver.equals( "1.0" ) )
+        {
+            schemaBytes = schema10;
+        }
+        else if( ver.equals( "1.1" ) )
+        {
+            schemaBytes = schema11;
+        }
+        else if( ver.equals( "1.2" ) )
+        {
+            schemaBytes = schema12;
+        }
+        else
+        {
+            logger.fatal( "No version found ..." );
+            return null;
+        }
+        return schemaBytes;
     }
 
 
@@ -308,9 +355,7 @@ public class ValidatorServlet extends HttpServlet
         int cl = req.getContentLength();
         ServletContext sc = getServletContext();
         int cmax = Integer.parseInt( sc.getInitParameter( "max-upload" ) );
-
         return cl <= cmax;
-
     }
 
 }
