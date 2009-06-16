@@ -33,115 +33,112 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class XMLSniffer implements ContentHandler
 {
     static Logger logger = Logger.getLogger( XMLSniffer.class );
-    
+
     private XMLSniffData sniffData;
 
-    XMLSniffData doSniff( String url )
+
+    XMLSniffData doSniff( String url ) throws SAXException, IOException
     {
         sniffData = null;
         XMLReader parser;
-        try
-        {
-            parser = XMLReaderFactory.createXMLReader();
-            parser.setContentHandler( this );    
-            parser.parse( url );
-        }
-        catch( SAXException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch( IOException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }       
-        
+
+        parser = XMLReaderFactory.createXMLReader();
+        parser.setContentHandler( this );
+        parser.parse( url );
+
         return this.sniffData;
 
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters( char[] ch, int start, int length ) throws SAXException
     {
-     // TODO Auto-generated method stub        
-        
+    // TODO Auto-generated method stub        
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endDocument()
      */
     public void endDocument() throws SAXException
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
      */
     public void endElement( String uri, String localName, String name ) throws SAXException
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endPrefixMapping(java.lang.String)
      */
     public void endPrefixMapping( String prefix ) throws SAXException
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
      */
     public void ignorableWhitespace( char[] ch, int start, int length ) throws SAXException
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String, java.lang.String)
      */
     public void processingInstruction( String target, String data ) throws SAXException
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
      */
     public void setDocumentLocator( Locator locator )
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#skippedEntity(java.lang.String)
      */
     public void skippedEntity( String name ) throws SAXException
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startDocument()
      */
     public void startDocument() throws SAXException
     {
-      
-        
-        
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
@@ -157,18 +154,17 @@ public class XMLSniffer implements ContentHandler
             sniffData.setAtts( new AttributesImpl( atts ) );
             logger.debug( "Done sniff. ns=" + uri + "; local-name=" + localName );
         }
-        
+
     }
+
 
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String)
      */
     public void startPrefixMapping( String prefix, String uri ) throws SAXException
     {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
-    
-    
 
 }

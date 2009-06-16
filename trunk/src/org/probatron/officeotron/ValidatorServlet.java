@@ -48,16 +48,15 @@ import com.thaiopensource.validate.ValidationDriver;
 public class ValidatorServlet extends HttpServlet
 {
     static Logger logger = Logger.getLogger( ValidatorServlet.class );
-    private final static String DOC_NS = "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
-
     private static byte[] schema10;
     private static byte[] schema11;
     private static byte[] schema12;
 
     static
     {
-        //      set up log message format, etc.
-        String logLvl = "DEBUG";
+        //  set up log message format, etc.
+        String logLvl = System.getProperty( "property://probatron.org/officeotron-log-level" );
+        logLvl = ( logLvl == null ) ? "WARN" : logLvl;
 
         Properties p = new Properties();
         p.setProperty( "log4j.rootCategory", logLvl + ", A1" );
@@ -105,7 +104,7 @@ public class ValidatorServlet extends HttpServlet
 
         if( ! contentLengthOkay( req ) )
         {
-            resp.sendError( 406, "Request body length exceeds the permitted maximum" );
+            resp.sendError( 412, "Request body length exceeds the permitted maximum" );
             return;
         }
 
@@ -113,6 +112,12 @@ public class ValidatorServlet extends HttpServlet
         ValidationReport commentary = new ValidationReport();
 
         ODFPackageManifest mft = doManifest( uuid, commentary );
+        if( mft == null )
+        {
+            resp.sendError( 412, "Submitted resource must be a recognisable ODF package" );
+            return;
+        }
+
         processDocs( uuid, mft, commentary );
         commentary.addComment( "Total count of validity errors: " + commentary.getErrCount() );
 
@@ -132,7 +137,16 @@ public class ValidatorServlet extends HttpServlet
         String manifestUrl = "jar:" + url + "!/META-INF/manifest.xml";
         // commentary.addComment( "Sniffing package manifest at " + manifestUrl );
 
-        XMLSniffData sd = sniffer.doSniff( manifestUrl );
+        XMLSniffData sd = null;
+        try
+        {
+            sd = sniffer.doSniff( manifestUrl );
+        }
+        catch( Exception e )
+        {
+            logger.fatal( "Cannot find/parse a manifest:" + e.getMessage() );
+        }
+
         if( sd != null )
         {
             logger.debug( "Found manifest" );
@@ -142,7 +156,6 @@ public class ValidatorServlet extends HttpServlet
         else
         {
             commentary.addComment( "ERROR", "The package does not contain a  manifest" );
-
         }
 
         return mft;
@@ -160,11 +173,24 @@ public class ValidatorServlet extends HttpServlet
             String url = "jar:" + Store.asUrlRef( uuid ) + "!/" + entry;
             logger.debug( "processing " + url );
             commentary.addComment( "Processing manifest entry: " + entry );
-            XMLSniffer sniffer = new XMLSniffer();
-            XMLSniffData sd = sniffer.doSniff( url );
-            if( sd.getRootNs().equals( DOC_NS ) )
+            ODFSniffer sniffer = new ODFSniffer();
+            XMLSniffData sd;
+
+            try
             {
-                String ver = Utils.getQAtt( sd.getAtts(), DOC_NS, "version" );
+                sd = sniffer.doSniff( url );
+            }
+            catch( SAXException e )
+            {
+                logger.fatal( "Referenced resource in manifest cannot be found" );
+                commentary.addComment( "FATAL",
+                        "Referenced resource in manifest cannot be found" );
+                return;
+            }
+
+            if( sd.getRootNs().equals( ODFSniffer.ODF_DOC_NS ) )
+            {
+                String ver = Utils.getQAtt( sd.getAtts(), ODFSniffer.ODF_DOC_NS, "version" );
                 logger.debug( "version is " + ver );
 
                 commentary.addComment( "Document \"" + entry + "\" has root element &lt;"
@@ -182,7 +208,12 @@ public class ValidatorServlet extends HttpServlet
                 }
 
                 validateDoc( url, ver, commentary );
+            }
 
+            if( sniffer.getGenerator() != "" )
+            {
+                commentary.addComment( "Found metadata for generator: \""
+                        + sniffer.getGenerator() + "\"" );
             }
 
         }
@@ -232,11 +263,11 @@ public class ValidatorServlet extends HttpServlet
                 URLConnection conn = new URL( url ).openConnection();
                 dis = conn.getInputStream();
                 logger.debug( "Calling validate()" );
-                
+
                 commentary.setIndent( 4 );
                 boolean r = vd.validate( new InputSource( dis ) );
-                
-                logger.debug(  "Errors in instance:" +  h.getInstanceErrCount() );
+
+                logger.debug( "Errors in instance:" + h.getInstanceErrCount() );
                 if( h.getInstanceErrCount() > ODFErrorHandler.THRESHOLD )
                 {
                     commentary.addComment( "(<i>"
