@@ -25,7 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -36,9 +36,12 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 public class Store
 {
+    static Logger logger = Logger.getLogger( Store.class );
+
     static String tmpFolder;
 
 
@@ -52,10 +55,17 @@ public class Store
     }
 
 
-    public static ArrayList<UUID> putMultiPart( InputStream is, HttpServletRequest req ) throws IOException
+    /**
+     * Persists items contained in a multipart servlet request.
+     * 
+     * @param req
+     * @return a map, mapping between item names and the UUIDs for their stored values
+     * @throws IOException
+     */
+    public static HashMap<String, UUID> putMultiPart( HttpServletRequest req )
+            throws IOException
     {
-        ArrayList<UUID> uuids = new ArrayList<UUID>();
-        InputStream sis = null;
+        HashMap<String, UUID> uuids = new HashMap<String, UUID>();
 
         ServletFileUpload upload = new ServletFileUpload();
         try
@@ -64,10 +74,10 @@ public class Store
             while( iter.hasNext() )
             {
                 FileItemStream item = iter.next();
-                sis = item.openStream();
+                InputStream sis = item.openStream();
                 UUID uuid = Store.put( sis );
-                uuids.add( uuid );
-
+                uuids.put( item.getFieldName(), uuid );
+                logger.debug( "Persisting item named: " + item.getFieldName() );
             }
         }
         catch( FileUploadException e )

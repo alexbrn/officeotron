@@ -25,7 +25,7 @@
 
 	<!-- set global properties for this build -->
 	<property name="src" location="src" />
-	<property name="version" value="0.1.0" />
+	<property name="version" value="0.1.1" />
 	<property name="build" location="build" />
 	<property name="dist" location="dist/officeotron" />
 	<property name="etc" location="etc" />
