@@ -59,7 +59,7 @@ public class ValidationReport
             sb.append( "</div>" );
         }
         sb.append( "<div class='" + klass + "'>" );
-        for( int i = 0; i < this.indent; i++ )
+        for( int i = 0; i < this.indent * 5; i++ )
         {
             sb.append( "&#160;" );
         }
@@ -89,15 +89,15 @@ public class ValidationReport
     }
 
 
-    public int getIndent()
+    public void decIndent()
     {
-        return indent;
+        this.indent--;
     }
 
 
-    public void setIndent( int indent )
+    public void incIndent()
     {
-        this.indent = indent;
+        this.indent++;
     }
 
 

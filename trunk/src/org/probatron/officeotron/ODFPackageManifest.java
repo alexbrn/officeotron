@@ -34,7 +34,7 @@ public class ODFPackageManifest implements ContentHandler
 {
     static Logger logger = Logger.getLogger( ODFPackageManifest.class );
     
-    private final static String MANIFEST_NS = "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0";
+    private final static String ODF_MANIFEST_NS = "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0";
 
     private ArrayList<String> itemRefs = new ArrayList<String>();
 
@@ -157,13 +157,13 @@ public class ODFPackageManifest implements ContentHandler
     public void startElement( String uri, String localName, String qName, Attributes atts )
             throws SAXException
     {
-        if( uri.equals( MANIFEST_NS ) && localName.equals( "file-entry" ) )
+        if( uri.equals( ODF_MANIFEST_NS ) && localName.equals( "file-entry" ) )
         {
             logger.debug( "processing file-entry in manifest" );
-            String mimeType = Utils.getQAtt( atts, MANIFEST_NS, "media-type" );
+            String mimeType = Utils.getQAtt( atts, ODF_MANIFEST_NS, "media-type" );
             if( mimeType.indexOf( "/xml" ) != -1 )
             {
-                String entryName = Utils.getQAtt( atts, MANIFEST_NS, "full-path" );
+                String entryName = Utils.getQAtt( atts, ODF_MANIFEST_NS, "full-path" );
                 itemRefs.add( entryName );
                 logger.debug( "Found entry: " + entryName );
             }
