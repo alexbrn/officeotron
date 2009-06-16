@@ -41,7 +41,7 @@
 	<target name="compile" depends="init" description="compile the java source">
 		<!-- Compile the java code from ${src} into ${build} -->
 
-		<javac source="1.6" srcdir="${src}" destdir="${build}/classes">
+		<javac source="1.5" srcdir="${src}" destdir="${build}/classes">
 			<classpath>
 				<pathelement location="${lib}/servlet-api.jar" />
 				<pathelement location="${lib}/commons-fileupload-1.2.1.jar" />
@@ -63,10 +63,8 @@
 		<!-- Create the distro directories -->
 		<mkdir dir="${dist}" />
 		<mkdir dir="${dist}/WEB-INF/lib" />
-
-
+		
 		<!-- libs -->
-
 		<copy todir="${dist}/WEB-INF/lib">
 			<fileset dir="${build}/lib/">
 				<include name="**/*.jar" />

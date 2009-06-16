@@ -40,7 +40,7 @@ public class ODFErrorHandler implements ErrorHandler
 
     public void error( SAXParseException e ) throws SAXException
     {
-        logger.debug( "Error: " + e.getMessage() );
+        logger.trace( "Error: " + e.getMessage() );
         if( instanceErrCount < THRESHOLD )
         {
             commentary.addComment( "ERROR", e.getMessage() );
