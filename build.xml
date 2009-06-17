@@ -20,7 +20,7 @@
 
 
 <project name="Office-o-tron" default="war" basedir=".">
-	
+
 	<description>Office-o-tron Build</description>
 
 	<!-- set global properties for this build -->
@@ -63,7 +63,7 @@
 		<!-- Create the distro directories -->
 		<mkdir dir="${dist}" />
 		<mkdir dir="${dist}/WEB-INF/lib" />
-		
+
 		<!-- libs -->
 		<copy todir="${dist}/WEB-INF/lib">
 			<fileset dir="${build}/lib/">
@@ -88,6 +88,14 @@
 	<target name="clean" description="clean up">
 		<delete dir="${build}" />
 		<delete dir="dist" />
+	</target>
+
+	<target name="distro" depends="war" description="generates distro files">
+		<zip destfile="${dist}/../officeotron-source-${version}.zip">
+			<zipfileset dir="${src}" prefix="src" />
+			<zipfileset dir="${etc}" prefix="etc" />
+			<zipfileset dir="." includes="build.xml" />
+		</zip>
 	</target>
 
 </project>

@@ -19,7 +19,6 @@
 
 package org.probatron.officeotron;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -33,7 +32,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class ODFPackageManifest implements ContentHandler
 {
     static Logger logger = Logger.getLogger( ODFPackageManifest.class );
-    
+
     private final static String ODF_MANIFEST_NS = "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0";
 
     private ArrayList<String> itemRefs = new ArrayList<String>();
@@ -47,17 +46,12 @@ public class ODFPackageManifest implements ContentHandler
             parser.setContentHandler( this );
             parser.parse( sysId );
         }
-        catch( SAXException e )
+        catch( Exception e )
         {
-            // TODO Auto-generated catch block
+            // this will have already been parsed once, so this should never happen
             e.printStackTrace();
+            throw new RuntimeException();
         }
-        catch( IOException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
     }
 
 
@@ -66,8 +60,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void characters( char[] arg0, int arg1, int arg2 ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -76,8 +69,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void endDocument() throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -86,8 +78,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void endElement( String arg0, String arg1, String arg2 ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -96,8 +87,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void endPrefixMapping( String arg0 ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -106,8 +96,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void ignorableWhitespace( char[] arg0, int arg1, int arg2 ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -116,8 +105,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void processingInstruction( String arg0, String arg1 ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -126,8 +114,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void setDocumentLocator( Locator arg0 )
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -136,8 +123,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void skippedEntity( String arg0 ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -146,8 +132,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void startDocument() throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -161,7 +146,7 @@ public class ODFPackageManifest implements ContentHandler
         {
             logger.debug( "processing file-entry in manifest" );
             String mimeType = Utils.getQAtt( atts, ODF_MANIFEST_NS, "media-type" );
-            if( mimeType.indexOf( "/xml" ) != -1 )
+            if( mimeType.indexOf( "/xml" ) != - 1 )
             {
                 String entryName = Utils.getQAtt( atts, ODF_MANIFEST_NS, "full-path" );
                 itemRefs.add( entryName );
@@ -176,8 +161,7 @@ public class ODFPackageManifest implements ContentHandler
      */
     public void startPrefixMapping( String arg0, String arg1 ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -188,7 +172,5 @@ public class ODFPackageManifest implements ContentHandler
     {
         return itemRefs;
     }
-    
-    
 
 }

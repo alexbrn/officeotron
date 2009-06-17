@@ -1,3 +1,22 @@
+/*
+ * This file is part of the source of
+ * 
+ * Office-o-tron - a web-based ODF document validator for Java(tm)
+ * 
+ * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+ * 
+ * This program is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.probatron.officeotron;
 
 import java.util.ArrayList;
@@ -11,7 +30,6 @@ import org.xml.sax.SAXException;
 public class ODFSniffer extends XMLSniffer
 {
     private String generator = "";
-    private boolean harvestGenerator;
     private ValidationReport commentary;
     private boolean checkIds;
     private int dupCount;
@@ -40,6 +58,7 @@ public class ODFSniffer extends XMLSniffer
 
     private static XMLNameSet idTypes = new XMLNameSet();
     private static XMLNameSet idRefTypes = new XMLNameSet();
+    private static XMLNameSet textIdOddBalls = new XMLNameSet();
 
     private ArrayList<String> idValues = new ArrayList<String>();
     private ArrayList<String> idRefValues = new ArrayList<String>();
@@ -62,6 +81,15 @@ public class ODFSniffer extends XMLSniffer
         idRefTypes.put( ODF_DRAW_NS, "shape-id" );
         idRefTypes.put( ODF_PRESENTATION_NS, "master-element" );
         idRefTypes.put( ODF_SMIL_NS, "target-element" );
+
+        // These elements treat text:id as NOT an ID
+        textIdOddBalls.put( ODF_TEXT_NS, "alphabetical-index-mark-end" );
+        textIdOddBalls.put( ODF_TEXT_NS, "alphabetical-index-mark-start" );
+        textIdOddBalls.put( ODF_TEXT_NS, "note" );
+        textIdOddBalls.put( ODF_TEXT_NS, "toc-mark-end" );
+        textIdOddBalls.put( ODF_TEXT_NS, "toc-mark-start" );
+        textIdOddBalls.put( ODF_TEXT_NS, "user-index-mark-end" );
+        textIdOddBalls.put( ODF_TEXT_NS, "user-index-mark-start" );
     }
 
 
@@ -83,7 +111,6 @@ public class ODFSniffer extends XMLSniffer
             harvestIdStuff( atts );
         }
 
-        this.harvestGenerator = ( uri.equals( ODF_META_NS ) && localName.equals( "generator" ) );
     }
 
 
@@ -94,7 +121,8 @@ public class ODFSniffer extends XMLSniffer
             String atturi = atts.getURI( i );
             String local = atts.getLocalName( i );
 
-            if( idTypes.contains( atturi, local ) )
+            if( idTypes.contains( atturi, local )
+                    && ! ( textIdOddBalls.contains( getContextNs(), getContextElement() ) ) )
             {
                 // CASE: we've got an ID value!
                 String val = atts.getValue( i );
@@ -141,7 +169,7 @@ public class ODFSniffer extends XMLSniffer
     {
         super.characters( ch, start, length );
 
-        if( this.harvestGenerator )
+        if( getContextNs().equals( ODF_META_NS ) && getContextElement().equals( "generator" ) )
         {
             this.generator += new String( ch, start, length );
         }
@@ -161,10 +189,11 @@ public class ODFSniffer extends XMLSniffer
         {
             if( this.dupCount > ODFErrorHandler.THRESHOLD )
             {
-                this.commentary.addComment( "WARN", "<i>" + ( this.dupCount - ODFErrorHandler.THRESHOLD )
+                this.commentary.addComment( "WARN", "<i>"
+                        + ( this.dupCount - ODFErrorHandler.THRESHOLD )
                         + " duplicate ID message(s) omitted for the sake of brevity</i>" );
             }
-            
+
             int errCount = 0;
 
             Iterator<String> iter = this.idRefValues.iterator();
@@ -187,7 +216,8 @@ public class ODFSniffer extends XMLSniffer
 
             if( errCount > ODFErrorHandler.THRESHOLD )
             {
-                this.commentary.addComment( "WARN", "<i>" + ( errCount - ODFErrorHandler.THRESHOLD )
+                this.commentary.addComment( "WARN", "<i>"
+                        + ( errCount - ODFErrorHandler.THRESHOLD )
                         + " absent ID message(s) omitted for the sake of brevity</i>" );
             }
         }
