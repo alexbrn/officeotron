@@ -25,17 +25,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 
 public class Store
@@ -55,45 +49,12 @@ public class Store
     }
 
 
-    /**
-     * Persists items contained in a multipart servlet request.
-     * 
-     * @param req
-     * @return a map, mapping between item names and the UUIDs for their stored values
-     * @throws IOException
-     */
-    public static HashMap<String, UUID> putMultiPart( HttpServletRequest req )
-            throws IOException
-    {
-        HashMap<String, UUID> uuids = new HashMap<String, UUID>();
-
-        ServletFileUpload upload = new ServletFileUpload();
-        try
-        {
-            FileItemIterator iter = upload.getItemIterator( req );
-            while( iter.hasNext() )
-            {
-                FileItemStream item = iter.next();
-                InputStream sis = item.openStream();
-                UUID uuid = Store.put( sis );
-                uuids.put( item.getFieldName(), uuid );
-                logger.debug( "Persisting item named: " + item.getFieldName() );
-            }
-        }
-        catch( FileUploadException e )
-        {
-            throw new RuntimeException( e.getMessage() );
-        }
-
-        return uuids;
-    }
-
-
     public static UUID put( InputStream is ) throws IOException
     {
         UUID uuid = UUID.randomUUID();
         String fn = asFilename( uuid );
-        Utils.streamToFile( is, fn, true );
+        long written = Utils.streamToFile( is, fn, true );
+        logger.trace( "Wrote " + written + " bytes to file" );
         return uuid;
     }
 
