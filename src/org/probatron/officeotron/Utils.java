@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -165,8 +166,7 @@ public class Utils
 
 
     public static long streamToFile( InputStream is, String fn, boolean closeStream )
-
-    throws IOException
+            throws IOException
     {
         File f = new File( fn );
         f.createNewFile();
@@ -190,6 +190,42 @@ public class Utils
     }
 
 
+    public static ValidationSession autoCreateValidationSession( Submission sub )
+    {
+        ValidationSession vs = null;
+
+        try
+        {
+            String url = sub.getCandidateUrl();
+
+            String s = "jar:" + url + "!/META-INF/manifest.xml";
+            byte[] ba = Utils.derefUrl( new URL( s ) );
+            if( ba != null )
+            {
+                vs = new ODFValidationSession( sub );
+                logger.info( "Auto detected ODF package" );
+            }
+            else
+            {
+                s = "jar:" + url + "!/_rels/.rels";
+                ba = Utils.derefUrl( new URL( s ) );
+                if( ba != null )
+                {
+                    vs = new OOXMLValidationSession( sub );
+                    logger.info( "Auto detected OOXML package" );
+                }
+            }
+        }
+        catch( MalformedURLException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return vs;
+    }
+
+
     /**
      * Reads all of an InputStream content into an OutputStream, via a buffer.
      * 
@@ -209,7 +245,7 @@ public class Utils
         {
             out.write( buf, 0, count );
             written += count;
-        }
+        }        
         if( ( closeFlags & CLOSE_IN ) != 0 )
         {
             streamClose( in );
