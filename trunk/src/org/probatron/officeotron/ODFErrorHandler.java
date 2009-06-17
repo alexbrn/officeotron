@@ -54,7 +54,7 @@ public class ODFErrorHandler implements ErrorHandler
     {
         logger.debug( "Fatal Error: " + e.getMessage() );
 
-        commentary.addComment( "ERROR", e.getMessage() );
+        commentary.addComment( "ERROR",  "(line " + e.getLineNumber() + ") " + e.getMessage() );
     }
 
 

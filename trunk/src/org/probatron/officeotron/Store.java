@@ -114,7 +114,6 @@ public class Store
         }
 
         return is;
-
     }
 
 
@@ -149,14 +148,12 @@ public class Store
     public static String asUrlRef( UUID uuid )
     {
         return "file:" + asFilename( uuid );
-
     }
 
 
     public static String asFilename( UUID uuid )
     {
         return tmpFolder + uuid;
-
     }
 
 }

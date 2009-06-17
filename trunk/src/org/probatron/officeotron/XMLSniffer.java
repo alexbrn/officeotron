@@ -34,6 +34,9 @@ public class XMLSniffer implements ContentHandler
 {
     static Logger logger = Logger.getLogger( XMLSniffer.class );
 
+    private String contextNs;
+    private String contextElement;
+
     private XMLSniffData sniffData;
 
 
@@ -47,7 +50,6 @@ public class XMLSniffer implements ContentHandler
         parser.parse( url );
 
         return this.sniffData;
-
     }
 
 
@@ -56,8 +58,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void characters( char[] ch, int start, int length ) throws SAXException
     {
-    // TODO Auto-generated method stub        
-
+    // do nothing
     }
 
 
@@ -66,8 +67,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void endDocument() throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -76,8 +76,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void endElement( String uri, String localName, String name ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -86,8 +85,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void endPrefixMapping( String prefix ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -96,8 +94,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void ignorableWhitespace( char[] ch, int start, int length ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -106,8 +103,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void processingInstruction( String target, String data ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -116,8 +112,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void setDocumentLocator( Locator locator )
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -126,8 +121,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void skippedEntity( String name ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+    // do nothing
     }
 
 
@@ -136,7 +130,7 @@ public class XMLSniffer implements ContentHandler
      */
     public void startDocument() throws SAXException
     {
-
+    // do nothing
     }
 
 
@@ -146,6 +140,8 @@ public class XMLSniffer implements ContentHandler
     public void startElement( String uri, String localName, String name, Attributes atts )
             throws SAXException
     {
+        this.contextElement = localName;
+        this.contextNs = uri;
         if( sniffData == null )
         {
             sniffData = new XMLSniffData();
@@ -154,7 +150,6 @@ public class XMLSniffer implements ContentHandler
             sniffData.setAtts( new AttributesImpl( atts ) );
             logger.debug( "Done sniff. ns=" + uri + "; local-name=" + localName );
         }
-
     }
 
 
@@ -163,8 +158,19 @@ public class XMLSniffer implements ContentHandler
      */
     public void startPrefixMapping( String prefix, String uri ) throws SAXException
     {
-    // TODO Auto-generated method stub
+    // do nothing
+    }
 
+
+    public String getContextNs()
+    {
+        return contextNs;
+    }
+
+
+    public String getContextElement()
+    {
+        return contextElement;
     }
 
 }
