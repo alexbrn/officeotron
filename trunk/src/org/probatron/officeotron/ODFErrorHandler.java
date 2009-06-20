@@ -43,7 +43,8 @@ public class ODFErrorHandler implements ErrorHandler
         logger.trace( "Error: " + e.getMessage() );
         if( instanceErrCount < THRESHOLD )
         {
-            commentary.addComment( "ERROR", e.getMessage() );
+            commentary.addComment( "ERROR", "(line " + e.getLineNumber() + ") "
+                    + e.getMessage() );
         }
         commentary.incErrs();
         instanceErrCount++;
@@ -54,7 +55,7 @@ public class ODFErrorHandler implements ErrorHandler
     {
         logger.debug( "Fatal Error: " + e.getMessage() );
 
-        commentary.addComment( "ERROR",  "(line " + e.getLineNumber() + ") " + e.getMessage() );
+        commentary.addComment( "ERROR", e.getMessage() );
     }
 
 

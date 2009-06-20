@@ -202,8 +202,9 @@ public class Utils
             byte[] ba = Utils.derefUrl( new URL( s ) );
             if( ba != null )
             {
-                vs = new ODFValidationSession( sub );
                 logger.info( "Auto detected ODF package" );
+                vs = new ODFValidationSession( sub );
+                
             }
             else
             {
@@ -211,8 +212,8 @@ public class Utils
                 ba = Utils.derefUrl( new URL( s ) );
                 if( ba != null )
                 {
-                    vs = new OOXMLValidationSession( sub );
                     logger.info( "Auto detected OOXML package" );
+                    vs = new OOXMLValidationSession( sub );                    
                 }
             }
         }

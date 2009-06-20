@@ -24,8 +24,8 @@
 	<description>Office-o-tron Build</description>
 
 	<!-- set global properties for this build -->
-	<property name="src" location="src" />
 	<property name="version" value="0.2.0" />
+	<property name="src" location="src" />
 	<property name="build" location="build" />
 	<property name="dist" location="dist/officeotron" />
 	<property name="etc" location="etc" />
@@ -33,12 +33,11 @@
 
 
 	<target name="init">
-		<tstamp />
-		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${build}/classes" />
 	</target>
 
-	<target name="compile" depends="init" description="compile the java source">
+
+	<target name="compile" depends="init" description="compile the Java(tm) source">
 		<!-- Compile the java code from ${src} into ${build} -->
 
 		<javac source="1.5" srcdir="${src}" destdir="${build}/classes">
@@ -51,16 +50,24 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="compile" description="make xmlprobe-ccs.jar">
+
+	<target name="jar" depends="compile" description="makes the JAR">
 		<!-- Create the distribution directory -->
 		<mkdir dir="${build}/lib" />
 		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-		<jar jarfile="${build}/lib/officeotron-${version}.jar" basedir="${build}/classes" />
+		<jar jarfile="${build}/lib/officeotron-${version}.jar" basedir="${build}/classes">
+			<manifest>
+				<attribute name="Built-By" value="Griffin Brown Digital Publishing Ltd" />
+				<attribute name="Implementation-Vendor" value="Griffin Brown Digital Publishing Ltd" />
+				<attribute name="Implementation-Title" value="Office-o-tron" />
+				<attribute name="Implementation-Version" value="${version}" />
+			</manifest>
+		</jar>
 	</target>
 
 
-	<target name="dist" depends="jar" description="modify Orbeon resources for use in ople">
-		<!-- Create the distro directories -->
+	<target name="webapp" depends="jar" description="Builds the Web application">
+		<!-- Create the webapp directories -->
 		<mkdir dir="${dist}" />
 		<mkdir dir="${dist}/WEB-INF/lib" />
 
@@ -81,7 +88,7 @@
 		<copy file="${etc}/web.xml" todir="${dist}/WEB-INF/" />
 	</target>
 
-	<target name="war" depends="dist" description="builds WAR">
+	<target name="war" depends="webapp" description="builds WAR">
 		<war destfile="dist/officeotron-${version}.war" basedir="${dist}" webxml="${dist}/WEB-INF/web.xml" />
 	</target>
 
@@ -90,7 +97,7 @@
 		<delete dir="dist" />
 	</target>
 
-	<target name="distro" depends="war" description="generates distro files">
+	<target name="distro" depends="war" description="generates source distro file for FOSS distribution">
 		<zip destfile="${dist}/../officeotron-source-${version}.zip">
 			<zipfileset dir="${src}" prefix="src" />
 			<zipfileset dir="${etc}" prefix="etc" />

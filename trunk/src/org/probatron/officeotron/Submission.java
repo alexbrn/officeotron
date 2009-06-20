@@ -157,15 +157,14 @@ public class Submission
 
     public String getOption( String name )
     {
-
         return optionMap.get( name );
     }
 
 
     public boolean getBooleanOption( String name )
     {
-        String s = optionMap.get( name );
-        return s == null ? false : s.equalsIgnoreCase( "true" );
+        String s = optionMap.get( name );        
+        return  (s == null) ? false : s.equalsIgnoreCase( "true" );
     }
 
 
