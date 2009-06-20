@@ -82,9 +82,8 @@ public class ValidatorServlet extends HttpServlet
         
         vs.validate();
 
-        resp.setCharacterEncoding( "UTF-8" );
-        resp.setContentType( "application/xml" );
-        vs.getCommentary().streamOut( resp.getOutputStream() );
+                        
+        vs.getCommentary().streamOut( resp);
     }
 
 

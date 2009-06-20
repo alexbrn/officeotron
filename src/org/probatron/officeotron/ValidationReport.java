@@ -21,7 +21,10 @@ package org.probatron.officeotron;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
@@ -34,15 +37,23 @@ public class ValidationReport
     static Logger logger = Logger.getLogger( ValidationReport.class );
 
     private StringBuffer sb = new StringBuffer();
-    private boolean started;
+
     private int indent;
     private int errCount;
 
 
     public ValidationReport()
     {
-        sb
-                .append( "<?xml version='1.0'?><div id='report' xmlns='http://www.w3.org/1999/xhtml'>" );
+        sb.append( "<?xml version='1.0' standalone='yes'?>"
+                + "<div xmlns='http://www.w3.org/1999/xhtml'>" );
+
+        String ver = Package.getPackage( "org.probatron.officeotron" )
+                .getImplementationVersion();
+
+        sb.append( "<div class='meta'>Beginning validation using "
+                + "<a href='http://code.google.com/p/officeotron/'>Office-o-tron</a> " + ver
+                + " at " + new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ).format( new Date() )
+                + "</div>" );
     }
 
 
@@ -54,25 +65,27 @@ public class ValidationReport
 
     void addComment( String klass, String s )
     {
-        if( started )
-        {
-            sb.append( "</div>" );
-        }
+
         sb.append( "<div class='" + klass + "'>" );
         for( int i = 0; i < this.indent * 5; i++ )
         {
             sb.append( "&#160;" );
         }
         sb.append( s );
-        started = true;
+        sb.append( "</div>" );
     }
 
 
-    void streamOut( OutputStream sos ) throws IOException
+    void streamOut( HttpServletResponse resp ) throws IOException
     {
-        sb.append( "</div></div>" );
+        sb.append( "</div>" );
 
-        byte[] ba = sb.toString().getBytes( "UTF-8" );
+        byte[] ba = sb.toString().getBytes( "us-ascii" ); // utf-8 compatible natch
+
+        resp.setContentLength( ba.length );
+        resp.setContentType( "application/xml" );
+        resp.setHeader( "Cache-Control", "no-cache" );
+        resp.setCharacterEncoding( "utf-8" );
 
         try
         {
@@ -85,7 +98,8 @@ public class ValidationReport
         }
 
         ByteArrayInputStream bis = new ByteArrayInputStream( ba );
-        Utils.transferBytesToEndOfStream( bis, sos, Utils.CLOSE_IN | Utils.CLOSE_OUT );
+        Utils.transferBytesToEndOfStream( bis, resp.getOutputStream(), Utils.CLOSE_IN
+                | Utils.CLOSE_OUT );
     }
 
 

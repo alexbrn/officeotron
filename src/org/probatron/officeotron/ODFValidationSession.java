@@ -34,6 +34,15 @@ import com.thaiopensource.util.PropertyMapBuilder;
 import com.thaiopensource.validate.ValidateProperty;
 import com.thaiopensource.validate.ValidationDriver;
 
+/*
+ * * Represents validation of an ODF Package.
+ * 
+ * <p>The {@link Submission} object passed to the constructor must represent a candidate that is
+ * a potential ODF package (i.e. that has a manifest.xml entry located as expected in the
+ * archive.</p> <p>The submission may have further options set:</p> <ul> <li> "check-ids"
+ * &#x2010; whether to perform ID/IDREF integrity testing during validation <li>"force-is"
+ * &#x2010; whether to force validation against the ISO/IEC 26300 schema </ul>
+ */
 public class ODFValidationSession extends ValidationSession
 {
     static Logger logger = Logger.getLogger( ODFValidationSession.class );
@@ -71,48 +80,27 @@ public class ODFValidationSession extends ValidationSession
         super( submission );
         this.forceIs = getSubmission().getBooleanOption( "force-is" );
         this.checkIds = getSubmission().getBooleanOption( "check-ids" );
+        logger.trace( "Creating ODFValidationSession. forceIs=" + this.forceIs + "; checkIds="
+                + this.checkIds );
     }
 
 
     public void validate()
     {
-        ODFPackageManifest mft = doManifest();
+        ODFPackageManifest mft = parseManifest();
         processManifestDocs( mft );
         getSubmission().cleanup();
         getCommentary().addComment(
-                "Total count of validity errors: " + getCommentary().getErrCount() );
+                "Grand total count of validity errors: " + getCommentary().getErrCount() );
     }
 
 
-    private ODFPackageManifest doManifest()
+    private ODFPackageManifest parseManifest()
     {
-        XMLSniffer sniffer = new XMLSniffer();
-        ODFPackageManifest mft = null;
-
         String url = this.getSubmission().getCandidateUrl();
         String manifestUrl = "jar:" + url + "!/META-INF/manifest.xml";
-
-        XMLSniffData sd = null;
-        try
-        {
-            sd = sniffer.doSniff( manifestUrl );
-        }
-        catch( Exception e )
-        {
-            logger.fatal( "Cannot find/parse a manifest:" + e.getMessage() );
-        }
-
-        if( sd != null )
-        {
-            logger.debug( "Found manifest" );
-            mft = new ODFPackageManifest();
-            mft.process( manifestUrl );
-        }
-        else
-        {
-            getCommentary().addComment( "ERROR", "The package does not contain a  manifest" );
-        }
-
+        ODFPackageManifest mft = new ODFPackageManifest();
+        mft.process( manifestUrl );
         return mft;
     }
 
@@ -148,8 +136,8 @@ public class ODFValidationSession extends ValidationSession
             {
                 processODFDocument( entryUrl, sd );
             }
-            
-            logger.trace(  "Done document processing" );
+
+            logger.trace( "Done document processing" );
 
             if( sniffer.getGenerator() != "" )
             {
@@ -170,7 +158,8 @@ public class ODFValidationSession extends ValidationSession
                 "It has root element named &lt;" + sd.getRootElementName()
                         + "> in the namespace <tt>" + sd.getRootNs() + "</tt>" );
 
-        if( forceIs )
+        logger.trace( "beginning validation with force setting of " + this.forceIs );
+        if( this.forceIs )
         {
             getCommentary().addComment( "WARN", "Forcing validation against ISO/IEC 26300" );
             ver = "1.0";
@@ -204,9 +193,12 @@ public class ODFValidationSession extends ValidationSession
     /**
      * Validates the given ODF XML document.
      * 
-     * @param url the URL of the candidate
-     * @param ver the version; must be "1.0", "1.1" or "1.2"
-     * @param commentary where to report the validation narrative
+     * @param url
+     *            the URL of the candidate
+     * @param ver
+     *            the version; must be "1.0", "1.1" or "1.2"
+     * @param commentary
+     *            where to report the validation narrative
      * @throws IOException
      * @throws MalformedURLException
      */
