@@ -22,16 +22,24 @@ package org.probatron.officeotron;
 // TODO: this
 public class OOXMLValidationSession extends ValidationSession
 {
+    OOXMLRelationshipCollection col = new OOXMLRelationshipCollection();
 
     public OOXMLValidationSession( Submission submission )
     {
         super( submission );
+    }
+
+
+    public void validate()
+    {        
+        parsePackageRelationshipPart( "_rels/.rels" );        
 
     }
-    
-    public  void validate()
+
+
+    private void parsePackageRelationshipPart( String entry )
     {
-        
+       
     }
 
 }
