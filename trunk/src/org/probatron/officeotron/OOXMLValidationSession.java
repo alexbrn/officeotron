@@ -1,9 +1,9 @@
 /*
  * This file is part of the source of
  * 
- * Office-o-tron - a web-based ODF document validator for Java(tm)
+ * Office-o-tron - a web-based office document validator for Java(tm)
  * 
- * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+ * Copyright (C) 2009 Griffin Brown Digital Publishing Ltd
  * 
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, either
@@ -19,10 +19,12 @@
 
 package org.probatron.officeotron;
 
-// TODO: this
+import org.apache.log4j.Logger;
+
 public class OOXMLValidationSession extends ValidationSession
 {
-    OOXMLRelationshipCollection col = new OOXMLRelationshipCollection();
+    static Logger logger = Logger.getLogger( OOXMLValidationSession.class );    
+    
 
 
     public OOXMLValidationSession( Submission submission )
@@ -33,20 +35,11 @@ public class OOXMLValidationSession extends ValidationSession
 
     public void validate()
     {
-        parsePackageRelationshipPart( "_rels/.rels" );
+        OPCPackage opc = new OPCPackage(this.getSubmission().getCandidateUrl());
+        //parsePackageRelationshipPart( "_rels/.rels" );
     }
 
 
-    /**
-     * Spiders within a package to pull out all Relationships. They are collected in the {@Link
-     *  col} object.
-     * 
-     * @param entry
-     *            the entry within the package to start spidering from
-     */
-    private void parsePackageRelationshipPart( String entry )
-    {
-
-    }
+    
 
 }
