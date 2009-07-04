@@ -19,10 +19,12 @@
 
 package org.probatron.officeotron;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -30,7 +32,7 @@ public class OPCPackage
 {
     static Logger logger = Logger.getLogger( OPCPackage.class );
     OOXMLTargetCollection col = new OOXMLTargetCollection();
-    private ArrayList< String > foldersProbed = new ArrayList< String >();
+    private ArrayList<String> foldersProbed = new ArrayList<String>();
     public String systemId;
 
 
@@ -44,6 +46,26 @@ public class OPCPackage
     public void process()
     {
         procRels( "_rels/.rels" );
+
+        //enrich with MIME type info from the Content Types
+        try
+        {
+            XMLReader parser = XMLReaderFactory.createXMLReader();
+            OOXMLContentTypeHandler h = new OOXMLContentTypeHandler( this.col );
+            parser.setContentHandler( h );
+            String ctu = "jar:" + this.systemId + "!/[Content_Types].xml";
+            parser.parse( ctu );
+        }
+        catch( SAXException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 
@@ -55,7 +77,7 @@ public class OPCPackage
      *            the entry within the package to start spidering from
      */
     private void procRels( String entry )
-    {
+    { 
 
         String partUrl = "jar:" + this.systemId + "!/" + entry;
         logger.debug( "Retrieving relationship part from OPC package:" + partUrl );
@@ -68,7 +90,7 @@ public class OPCPackage
             parser.parse( partUrl );
 
             // the handler collects the Relationship; process them ...
-            Iterator< OOXMLTarget > iter = h.col.iterator();
+            Iterator<OOXMLTarget> iter = h.col.iterator();
             logger.trace( "Number of Relationships found: " + h.col.size() );
 
             while( iter.hasNext() )
@@ -77,8 +99,9 @@ public class OPCPackage
                 this.col.add( t );
 
                 String f = t.getTargetFolder();
-                if( !this.foldersProbed.contains( f ) )
+                if( ! this.foldersProbed.contains( f ) )
                 {
+                    this.foldersProbed.add( f );
                     String potentialRelsUrl = f + "/_rels/" + t.getFilename() + ".rels";
                     logger.debug( "Probing new target folder: " + potentialRelsUrl );
                     procRels( potentialRelsUrl ); // recurse

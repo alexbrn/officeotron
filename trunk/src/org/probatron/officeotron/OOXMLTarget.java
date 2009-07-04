@@ -91,7 +91,8 @@ public class OOXMLTarget
         String s = this.name.replaceFirst( "/[^/]+$", "" );
         return s;
     }
-    
+
+
     public String getFilename()
     {
         String s = this.name.replaceFirst( "^.*/", "" );
@@ -99,10 +100,18 @@ public class OOXMLTarget
     }
 
 
+    public String getQPartname()
+    {
+        String base = this.hostPartEntryName.replaceFirst( "_rels/.*$", "" );
+        String s = "/" +  base + getName();
+        return s;
+    }
+
+
     @Override
     public String toString()
     {
-        return "type=" + type + "; target=" + name;
+        return "type=" + type + "; target=" + name + "; host=" + this.hostPartEntryName;
     }
 
 }
