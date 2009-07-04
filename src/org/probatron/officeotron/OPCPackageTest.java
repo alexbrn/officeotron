@@ -19,16 +19,17 @@
 
 package org.probatron.officeotron;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Properties;
+
+import junit.framework.TestCase;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Test;
 
-public class OPCPackageTest
+public class OPCPackageTest extends TestCase
 {
-    
+    OPCPackage opc;
+
     static
     {
         // set up log message format, etc.
@@ -40,16 +41,61 @@ public class OPCPackageTest
         p.setProperty( "log4j.appender.A1", "org.apache.log4j.ConsoleAppender" );
         p.setProperty( "log4j.appender.A1.target", "System.err" );
         p.setProperty( "log4j.appender.A1.layout", "org.apache.log4j.PatternLayout" );
-        p.setProperty( "log4j.appender.A1.layout.ConversionPattern", "[%d{DATE}] %c %p - %m%n" );
+        p.setProperty( "log4j.appender.A1.layout.ConversionPattern", "%c %p - %m%n" );
         PropertyConfigurator.configure( p );
+
     }
+
+
+    @Override
+    protected void setUp() throws Exception
+    {
+        opc = new OPCPackage( "file:etc/test-data/maria.xlsx" );
+        opc.process();
+        super.setUp();
+    }
+
 
     @Test
     public void test_targetCount()
     {
-        OPCPackage opc = new OPCPackage( "file:etc/test-data/maria.xlsx" );
-        opc.process();
         assertTrue( opc.col.size() == 10 );
+    }
+
+
+    @Test
+    public void test_entrySizeMatch()
+    {
+        assertTrue( opc.col.size() == opc.col.getPartNamesSet().size() );
+    }
+
+
+    @Test
+    public void test_anEntry()
+    {
+        OOXMLTarget t = opc.col.getTargetByName( "/xl/worksheets/sheet1.xml" );
+        assertTrue( t != null );
+    }
+
+
+    @Test
+    public void test_entryType()
+    {
+        OOXMLTarget t = opc.col.getTargetByName( "/xl/worksheets/sheet1.xml" );
+        assertTrue( t
+                .getType()
+                .equals(
+                        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" ) );
+    }
+    
+    @Test
+    public void test_mimeType()
+    {
+        OOXMLTarget t = opc.col.getTargetByName( "/xl/worksheets/sheet1.xml" );
+        assertTrue( t
+                .getMimeType()
+                .equals(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" ) );
     }
 
 }
