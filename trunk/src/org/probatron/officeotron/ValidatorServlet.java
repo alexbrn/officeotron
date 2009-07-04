@@ -31,14 +31,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+// TODO: add a friendly info page for when noobs try to GET this
 @SuppressWarnings("serial")
 public class ValidatorServlet extends HttpServlet
-{    
+{
+
     static Logger logger = Logger.getLogger( ValidatorServlet.class );
 
     static
     {
-        //  set up log message format, etc.
+        // set up log message format, etc.
         String logLvl = System.getProperty( "property://probatron.org/officeotron-log-level" );
         logLvl = ( logLvl == null ) ? "WARN" : logLvl;
 
@@ -58,13 +60,13 @@ public class ValidatorServlet extends HttpServlet
     {
 
         Store.init( this ); // to get the storage layer up and running
-        
-        if( ! contentLengthOkay( req ) )
+
+        if( !contentLengthOkay( req ) )
         {
             resp.sendError( 412, "Request body length exceeds the permitted maximum" );
             return;
         }
-        
+
         Submission sub = new Submission( req );
         int retCode = sub.fetchFromClient();
         if( retCode != 200 )
@@ -72,18 +74,19 @@ public class ValidatorServlet extends HttpServlet
             resp.sendError( retCode, sub.getResponseErr() );
             return;
         }
-        
-        ValidationSession vs = Utils.autoCreateValidationSession( sub ); // determine ODF or OOXML
+
+        ValidationSession vs = Utils.autoCreateValidationSession( sub ); // determine ODF or
+                                                                         // OOXML
         if( vs == null )
         {
-            resp.sendError( 412, "Submitted resource must be a recognisable Office document package" );
+            resp.sendError( 412,
+                    "Submitted resource must be a recognisable Office document package" );
             return;
         }
-        
+
         vs.validate();
 
-                        
-        vs.getCommentary().streamOut( resp);
+        vs.getCommentary().streamOut( resp );
     }
 
 

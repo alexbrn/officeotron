@@ -111,7 +111,10 @@ public class ODFValidationSession extends ValidationSession
         {
             String entry = mft.getItemRefs().get( i );
             String packageUrl = this.getSubmission().getCandidateUrl();
-            String entryUrl = "jar:" + packageUrl + "!/" + entry;
+            String entryUrl = null;
+
+            entryUrl = "jar:" + packageUrl + "!/" + entry;
+            entryUrl = entryUrl.replaceAll( " ", "%20" );
 
             logger.debug( "processing " + entryUrl );
             getCommentary().addComment( "Processing manifest entry: " + entry );

@@ -24,6 +24,7 @@ public class OOXMLValidationSession extends ValidationSession
 {
     OOXMLRelationshipCollection col = new OOXMLRelationshipCollection();
 
+
     public OOXMLValidationSession( Submission submission )
     {
         super( submission );
@@ -31,15 +32,21 @@ public class OOXMLValidationSession extends ValidationSession
 
 
     public void validate()
-    {        
-        parsePackageRelationshipPart( "_rels/.rels" );        
-
+    {
+        parsePackageRelationshipPart( "_rels/.rels" );
     }
 
 
+    /**
+     * Spiders within a package to pull out all Relationships. They are collected in the {@Link
+     *  col} object.
+     * 
+     * @param entry
+     *            the entry within the package to start spidering from
+     */
     private void parsePackageRelationshipPart( String entry )
     {
-       
+
     }
 
 }
