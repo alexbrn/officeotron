@@ -1,9 +1,9 @@
 /*
  * This file is part of the source of
  * 
- * Office-o-tron - a web-based ODF document validator for Java(tm)
+ * Office-o-tron - a web-based office document validator for Java(tm)
  * 
- * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+ * Copyright (C) 2009 Griffin Brown Digital Publishing Ltd
  * 
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, either
@@ -19,13 +19,25 @@
 
 package org.probatron.officeotron;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 public class OOXMLRelationshipPartHandler implements ContentHandler
 {
+    static Logger logger = Logger.getLogger( OOXMLRelationshipPartHandler.class );
+    OOXMLTargetCollection col = new OOXMLTargetCollection();
+    String hostRelationshipPartEntryName;
+
+
+    public OOXMLRelationshipPartHandler( String hostRelationshipPartEntryName )
+    {
+        this.hostRelationshipPartEntryName = hostRelationshipPartEntryName;
+    }
+
 
     public void characters( char[] arg0, int arg1, int arg2 ) throws SAXException
     {
@@ -81,10 +93,17 @@ public class OOXMLRelationshipPartHandler implements ContentHandler
     }
 
 
-    public void startElement( String arg0, String arg1, String arg2, Attributes arg3 )
+    public void startElement( String uri, String localName, String qName, Attributes atts )
             throws SAXException
     {
-    // do nothing
+        if( localName.equals( "Relationship" )
+                && uri.equals( OOXMLTarget.NS_PACKAGE_RELATIONSHIPS ) )
+        {
+            OOXMLTarget t = new OOXMLTarget( this.hostRelationshipPartEntryName,
+                    new AttributesImpl( atts ) );
+            this.col.add( t );
+        }
+
     }
 
 

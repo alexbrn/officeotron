@@ -1,18 +1,18 @@
 /*
  * This file is part of the source of
- * 
- * Office-o-tron - a web-based ODF document validator for Java(tm)
- * 
- * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
- * 
+ *
+ * Office-o-tron - a web-based office document validator for Java(tm)
+ *
+ * Copyright (C) 2009 Griffin Brown Digital Publishing Ltd
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
  * the GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License along with this
  * program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -70,7 +70,7 @@ public class Submission
 
     /**
      * Retrieves items contained in a multipart servlet request.
-     * 
+     *
      * @param req
      * @return a map, mapping between item names and the UUIDs for their stored values
      * @throws IOException
@@ -93,7 +93,7 @@ public class Submission
 
                 if( name.equalsIgnoreCase( "candidate" ) )
                 {
-                    this.candidateUuid = Store.put( sis ); // closes stream 
+                    this.candidateUuid = Store.put( sis ); // closes stream
                     logger.debug( "Persisted candidate item with UUID: " + this.candidateUuid );
 
                 }
@@ -163,7 +163,7 @@ public class Submission
 
     public boolean getBooleanOption( String name )
     {
-        String s = optionMap.get( name );        
+        String s = optionMap.get( name );
         return  (s == null) ? false : s.equalsIgnoreCase( "true" );
     }
 
