@@ -19,16 +19,23 @@
 
 package org.probatron.officeotron;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 public class OOXMLValidationSession extends ValidationSession
 {
     static Logger logger = Logger.getLogger( OOXMLValidationSession.class );
+    private String schemaUrlBase;
 
 
-    public OOXMLValidationSession( Submission submission )
+    public OOXMLValidationSession( Submission submission, String schemaUrlBase )
     {
         super( submission );
+        this.schemaUrlBase = schemaUrlBase;
     }
 
 
@@ -36,7 +43,6 @@ public class OOXMLValidationSession extends ValidationSession
     {
         OPCPackage opc = new OPCPackage( this.getSubmission().getCandidateUrl() );
         checkRelationships( opc );
-        validateCandidates( opc );
     }
 
 
@@ -63,7 +69,7 @@ public class OOXMLValidationSession extends ValidationSession
                 continue;
             }
 
-            if( !t.getType().equals( osm.getRelType() ) )
+            if( ! t.getType().equals( osm.getRelType() ) )
             {
                 logger.debug( "Relationship type mismatch" );
                 this.errCount++;
@@ -74,6 +80,8 @@ public class OOXMLValidationSession extends ValidationSession
                                 + "\"" );
             }
 
+            validateTarget( t, osm );
+
         }
 
         this.getCommentary().decIndent();
@@ -81,9 +89,73 @@ public class OOXMLValidationSession extends ValidationSession
     }
 
 
-    void validateCandidates( OPCPackage opc )
+    void validateTarget( OOXMLTarget t, OOXMLSchemaMapping osm )
     {
-        OOXMLTargetCollection col = opc.getEntryCollection();
+        String schemaName = osm.getSchemaName();
+        getCommentary().addComment( "Validating package item \"" + t.getQPartname() + "\"" );
+        getCommentary().incIndent();
+
+        if( schemaName == null || schemaName.length() == 0 )
+        {
+            this.getCommentary().addComment(
+                    "No schema known to validate content of type: " + osm.getContentType() );
+
+        }
+        else
+        {
+
+            try
+            {
+                XMLReader parser;
+
+                parser = XMLReaderFactory.createXMLReader();
+                CommentatingErrorHandler h = new CommentatingErrorHandler( this.getCommentary() );
+                parser.setErrorHandler( h );
+
+                String schemaUrl = this.schemaUrlBase + osm.getSchemaName();
+                logger.debug( "Selecting XSD schema: " + schemaUrl );
+
+                parser.setFeature( "http://xml.org/sax/features/validation", true );
+                parser.setFeature( "http://apache.org/xml/features/validation/schema", true );
+                parser.setProperty(
+                        "http://apache.org/xml/properties/schema/external-schemaLocation", osm
+                                .getNs()
+                                + " " + schemaUrl );
+
+                String packageUrl = this.getSubmission().getCandidateUrl();
+
+                String url = "jar:" + packageUrl + "!" + t.getQPartname();
+                logger.debug( "Validating: " + url );
+
+                parser.parse( url );
+
+                if( h.getInstanceErrCount() > 0 )
+                {
+                    getCommentary().addComment(
+                            "\"" + t.getQPartname() + "\" contains " + h.getInstanceErrCount()
+                                    + " validity error"
+                                    + ( h.getInstanceErrCount() > 1 ? "s" : "" ) );
+                    errCount += h.getInstanceErrCount();
+                }
+                else
+                {
+                    getCommentary().addComment( "\"" + t.getQPartname() + "\" is schema-valid" );
+                }
+
+            }
+            catch( SAXException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch( IOException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        getCommentary().decIndent();
 
     }
 

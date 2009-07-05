@@ -213,7 +213,7 @@ public class ODFValidationSession extends ValidationSession
         {
             // Create the Jing ValidationDriver
             PropertyMapBuilder builder = new PropertyMapBuilder();
-            ODFErrorHandler h = new ODFErrorHandler( commentary );
+            CommentatingErrorHandler h = new CommentatingErrorHandler( commentary );
             ValidateProperty.ERROR_HANDLER.put( builder, h );
             ValidationDriver driver = new ValidationDriver( builder.toPropertyMap() );
 
@@ -231,10 +231,10 @@ public class ODFValidationSession extends ValidationSession
                 commentary.incIndent();
                 boolean isValid = driver.validate( new InputSource( candidateStream ) );
                 logger.debug( "Errors in instance:" + h.getInstanceErrCount() );
-                if( h.getInstanceErrCount() > ODFErrorHandler.THRESHOLD )
+                if( h.getInstanceErrCount() > CommentatingErrorHandler.THRESHOLD )
                 {
                     commentary.addComment( "(<i>"
-                            + ( h.getInstanceErrCount() - ODFErrorHandler.THRESHOLD )
+                            + ( h.getInstanceErrCount() - CommentatingErrorHandler.THRESHOLD )
                             + " error(s) omitted for the sake of brevity</i>)" );
                 }
                 commentary.decIndent();

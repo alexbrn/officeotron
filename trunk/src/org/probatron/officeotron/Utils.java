@@ -213,7 +213,7 @@ public class Utils
                 if( ba != null )
                 {
                     logger.info( "Auto detected OOXML package" );
-                    vs = new OOXMLValidationSession( sub );
+                    vs = new OOXMLValidationSession( sub, null ); //FIXME
                 }
             }
         }

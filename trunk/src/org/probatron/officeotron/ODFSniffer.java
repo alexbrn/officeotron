@@ -131,7 +131,7 @@ public class ODFSniffer extends XMLSniffer
                 if( n >= 0 )
                 {
                     this.dupCount++;
-                    if( this.dupCount <= ODFErrorHandler.THRESHOLD )
+                    if( this.dupCount <= CommentatingErrorHandler.THRESHOLD )
                     {
                         this.commentary.addComment( "ERROR", "Duplicate ID value found: \""
                                 + val + "\"" );
@@ -187,10 +187,10 @@ public class ODFSniffer extends XMLSniffer
     {
         if( this.checkIds )
         {
-            if( this.dupCount > ODFErrorHandler.THRESHOLD )
+            if( this.dupCount > CommentatingErrorHandler.THRESHOLD )
             {
                 this.commentary.addComment( "WARN", "<i>"
-                        + ( this.dupCount - ODFErrorHandler.THRESHOLD )
+                        + ( this.dupCount - CommentatingErrorHandler.THRESHOLD )
                         + " duplicate ID message(s) omitted for the sake of brevity</i>" );
             }
 
@@ -206,7 +206,7 @@ public class ODFSniffer extends XMLSniffer
                 if( n < 0 )
                 {
                     errCount++;
-                    if( errCount <= ODFErrorHandler.THRESHOLD )
+                    if( errCount <= CommentatingErrorHandler.THRESHOLD )
                     {
                         this.commentary.addComment( "WARNING", "Reference to absent ID \""
                                 + ref + "\"" );
@@ -214,10 +214,10 @@ public class ODFSniffer extends XMLSniffer
                 }
             }
 
-            if( errCount > ODFErrorHandler.THRESHOLD )
+            if( errCount > CommentatingErrorHandler.THRESHOLD )
             {
                 this.commentary.addComment( "WARN", "<i>"
-                        + ( errCount - ODFErrorHandler.THRESHOLD )
+                        + ( errCount - CommentatingErrorHandler.THRESHOLD )
                         + " absent ID message(s) omitted for the sake of brevity</i>" );
             }
         }
