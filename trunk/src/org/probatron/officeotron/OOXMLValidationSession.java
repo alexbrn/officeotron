@@ -22,7 +22,10 @@ package org.probatron.officeotron;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -43,6 +46,12 @@ public class OOXMLValidationSession extends ValidationSession
     {
         OPCPackage opc = new OPCPackage( this.getSubmission().getCandidateUrl() );
         checkRelationships( opc );
+
+        if( errCount > 0 )
+        {
+            getCommentary().addComment( "ERROR",
+                    "Grand total of errors in submitted package: " + errCount );
+        }
     }
 
 
@@ -99,28 +108,14 @@ public class OOXMLValidationSession extends ValidationSession
         {
             this.getCommentary().addComment(
                     "No schema known to validate content of type: " + osm.getContentType() );
-
         }
         else
         {
 
             try
             {
-                XMLReader parser;
-
-                parser = XMLReaderFactory.createXMLReader();
                 CommentatingErrorHandler h = new CommentatingErrorHandler( this.getCommentary() );
-                parser.setErrorHandler( h );
-
-                String schemaUrl = this.schemaUrlBase + osm.getSchemaName();
-                logger.debug( "Selecting XSD schema: " + schemaUrl );
-
-                parser.setFeature( "http://xml.org/sax/features/validation", true );
-                parser.setFeature( "http://apache.org/xml/features/validation/schema", true );
-                parser.setProperty(
-                        "http://apache.org/xml/properties/schema/external-schemaLocation", osm
-                                .getNs()
-                                + " " + schemaUrl );
+                XMLReader parser = getConfiguredParser( osm, h );
 
                 String packageUrl = this.getSubmission().getCandidateUrl();
 
@@ -141,6 +136,14 @@ public class OOXMLValidationSession extends ValidationSession
                 {
                     getCommentary().addComment( "\"" + t.getQPartname() + "\" is schema-valid" );
                 }
+                if( h.getInstanceErrCount() > CommentatingErrorHandler.THRESHOLD )
+                {
+                    getCommentary()
+                            .addComment(
+                                    "(<i>"
+                                            + ( h.getInstanceErrCount() - CommentatingErrorHandler.THRESHOLD )
+                                            + " error(s) omitted for the sake of brevity</i>)" );
+                }
 
             }
             catch( SAXException e )
@@ -156,6 +159,47 @@ public class OOXMLValidationSession extends ValidationSession
         }
 
         getCommentary().decIndent();
+
+    }
+
+
+    XMLReader getConfiguredParser( OOXMLSchemaMapping osm, ErrorHandler h )
+    {
+        XMLReader parser = null;
+
+        try
+        {
+            parser = XMLReaderFactory.createXMLReader();
+
+            parser.setErrorHandler( h );
+
+            String schemaUrl = this.schemaUrlBase + osm.getSchemaName();
+            logger.debug( "Selecting XSD schema: " + schemaUrl );
+
+            parser.setFeature( "http://xml.org/sax/features/validation", true );
+            parser.setFeature( "http://apache.org/xml/features/validation/schema", true );
+            parser.setProperty(
+                    "http://apache.org/xml/properties/schema/external-schemaLocation", osm
+                            .getNs()
+                            + " " + schemaUrl );
+        }
+        catch( SAXNotRecognizedException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch( SAXNotSupportedException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch( SAXException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return parser;
 
     }
 
