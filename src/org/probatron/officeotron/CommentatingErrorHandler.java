@@ -24,15 +24,15 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class ODFErrorHandler implements ErrorHandler
+public class CommentatingErrorHandler implements ErrorHandler
 {
     private ValidationReport commentary;
-    static Logger logger = Logger.getLogger( ODFErrorHandler.class );
+    static Logger logger = Logger.getLogger( CommentatingErrorHandler.class );
     private int instanceErrCount;
     public final static int THRESHOLD = 10;
 
 
-    public ODFErrorHandler( ValidationReport commentary )
+    public CommentatingErrorHandler( ValidationReport commentary )
     {
         this.commentary = commentary;
     }
