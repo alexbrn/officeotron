@@ -1,0 +1,494 @@
+<ooxml-schema-mapping>
+
+  <!-- WML -->
+
+  <cluster>
+    <clause>11.3.2</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.3</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.4</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.endnotes+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.5</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.6</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.7</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.8</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.document.glossary+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/glossaryDocument</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.9</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/header</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.10</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.10</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.11</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.12</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>11.3.13</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.wordprocessingml.webSettings+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/wordprocessingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings</source-relationship>
+    <schema-name>wml.xsd</schema-name>
+  </cluster>
+
+  <!-- SML -->
+
+  <cluster>
+    <clause>12.3.1</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.calcChain+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/calcChain</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.2</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.chartsheet+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/chartsheet</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.3</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.4</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.connections+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/connections</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.7</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.dialogsheet+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/dialogsheet</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.8</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.drawing+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.9</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.externalLink+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/externalLink</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.10</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.sheetMetadata+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/sheetMetadata</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.11</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.pivotTable+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/pivotTable</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.12</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.pivotCacheDefinition+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/pivotCacheDefinition</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.13</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.pivotCacheRecords+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/pivotCacheRecords</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.14</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.queryTable+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/queryTable</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.15</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.16</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.revisionHeaders+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/revisionHeaders</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.17</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.revisionLog+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/revisionLog</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.18</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.userNames+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/usernames</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.19</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.tableSingleCells+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableSingleCells</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.20</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.21</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/table</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.22</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.volatileDependencies+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/volatileDependencies</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.23</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.23</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>12.3.24</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/spreadsheetml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet</source-relationship>
+    <schema-name>sml.xsd</schema-name>
+  </cluster>
+
+  <!-- PML -->
+
+  <cluster>
+    <clause>13.3.1</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.commentAuthors+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.2</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.comments+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.3</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.handoutMaster+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/handoutMaster</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.4</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.notesMaster+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesMaster</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.5</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.6</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.6</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.sildeshow.main+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.6</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.template.main+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.7</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.presProps+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/presProps</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.8</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.slide+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.9</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.10</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.11</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.tags+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/tags</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>13.3.11</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.viewProps+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/presentationml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/viewProps</source-relationship>
+    <schema-name>pml.xsd</schema-name>
+  </cluster>
+
+  <!-- DrawingML -->
+
+  <cluster>
+    <clause>14.2.1</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.drawingml.chart+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/chart</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.2</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.drawingml.chartshapes+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/chart</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/chartUserShapes</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.3</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.drawingml.diagramColors+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/diagram</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/diagramColors</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.4</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.drawingml.diagramData+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/diagram</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/diagramData</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.5</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.drawingml.diagramLayout+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/diagram</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/diagramLayout</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.6</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.drawingml.diagramStyle+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/diagram</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/diagramQuickStyle</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.7</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.theme+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.8</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.themeOverride+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/chart</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/themeOverride</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <cluster>
+    <clause>14.2.9</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.presentationml.tableStyles+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/drawingml/2006/main</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/themeOverride</source-relationship>
+    <schema-name>dml-main.xsd</schema-name>
+  </cluster>
+
+  <!-- Other -->
+
+  <cluster>
+    <clause>15.2.6</clause>
+    <content-type>application/vnd.openxmlformats-officedocument.customXmlProperties+xml</content-type>
+    <root-namespace>http://schemas.openxmlformats.org/officeDocument/2006/customXmlDataProps</root-namespace>
+    <source-relationship>http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXmlProps</source-relationship>
+    <schema-name/>
+  </cluster>
+
+
+</ooxml-schema-mapping>

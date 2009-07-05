@@ -23,8 +23,7 @@ import org.apache.log4j.Logger;
 
 public class OOXMLValidationSession extends ValidationSession
 {
-    static Logger logger = Logger.getLogger( OOXMLValidationSession.class );    
-    
+    static Logger logger = Logger.getLogger( OOXMLValidationSession.class );
 
 
     public OOXMLValidationSession( Submission submission )
@@ -35,11 +34,57 @@ public class OOXMLValidationSession extends ValidationSession
 
     public void validate()
     {
-        OPCPackage opc = new OPCPackage(this.getSubmission().getCandidateUrl());
-        //parsePackageRelationshipPart( "_rels/.rels" );
+        OPCPackage opc = new OPCPackage( this.getSubmission().getCandidateUrl() );
+        checkRelationships( opc );
+        validateCandidates( opc );
     }
 
 
-    
+    public void checkRelationships( OPCPackage opc )
+    {
+        logger.trace( "Beginning package integrity test" );
+        this.getCommentary().addComment( "Checking Package relationship integrity" );
+        this.getCommentary().incIndent();
+
+        logger.trace( "Collection size: " + opc.getEntryCollection().size() );
+
+        for( int i = 0; i < opc.getEntryCollection().size(); i++ )
+        {
+            OOXMLTarget t = opc.getEntryCollection().get( i );
+            String mt = t.getMimeType();
+
+            logger.trace( "Testing entry of MIME type: " + mt );
+
+            OOXMLSchemaMapping osm = OOXMLSchemaMap.getMappingForContentType( mt );
+
+            if( osm == null )
+            {
+                logger.info( "No mapping found for entry" );
+                continue;
+            }
+
+            if( !t.getType().equals( osm.getRelType() ) )
+            {
+                logger.debug( "Relationship type mismatch" );
+                this.errCount++;
+                this.getCommentary().addComment(
+                        "ERROR",
+                        "Entry with MIME type \"" + mt
+                                + "\" has unrecognized relationship type \"" + t.getType()
+                                + "\"" );
+            }
+
+        }
+
+        this.getCommentary().decIndent();
+
+    }
+
+
+    void validateCandidates( OPCPackage opc )
+    {
+        OOXMLTargetCollection col = opc.getEntryCollection();
+
+    }
 
 }
