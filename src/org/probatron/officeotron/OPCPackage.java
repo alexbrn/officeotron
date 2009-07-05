@@ -31,8 +31,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class OPCPackage
 {
     static Logger logger = Logger.getLogger( OPCPackage.class );
-    OOXMLTargetCollection col = new OOXMLTargetCollection();
-    private ArrayList<String> foldersProbed = new ArrayList<String>();
+    private OOXMLTargetCollection col = new OOXMLTargetCollection();
+    private ArrayList< String > foldersProbed = new ArrayList< String >();
     public String systemId;
 
 
@@ -47,7 +47,7 @@ public class OPCPackage
     {
         procRels( "_rels/.rels" );
 
-        //enrich with MIME type info from the Content Types
+        // enrich with MIME type info from the Content Types
         try
         {
             XMLReader parser = XMLReaderFactory.createXMLReader();
@@ -77,7 +77,7 @@ public class OPCPackage
      *            the entry within the package to start spidering from
      */
     private void procRels( String entry )
-    { 
+    {
 
         String partUrl = "jar:" + this.systemId + "!/" + entry;
         logger.debug( "Retrieving relationship part from OPC package:" + partUrl );
@@ -90,7 +90,7 @@ public class OPCPackage
             parser.parse( partUrl );
 
             // the handler collects the Relationship; process them ...
-            Iterator<OOXMLTarget> iter = h.col.iterator();
+            Iterator< OOXMLTarget > iter = h.col.iterator();
             logger.trace( "Number of Relationships found: " + h.col.size() );
 
             while( iter.hasNext() )
@@ -99,7 +99,7 @@ public class OPCPackage
                 this.col.add( t );
 
                 String f = t.getTargetFolder();
-                if( ! this.foldersProbed.contains( f ) )
+                if( !this.foldersProbed.contains( f ) )
                 {
                     this.foldersProbed.add( f );
                     String potentialRelsUrl = f + "/_rels/" + t.getFilename() + ".rels";
@@ -115,7 +115,12 @@ public class OPCPackage
             logger.info( e.getMessage() ); // we expect some of our attempts to fail
 
         }
+    }
 
+
+    public OOXMLTargetCollection getEntryCollection()
+    {
+        return this.col;
     }
 
 }

@@ -59,21 +59,21 @@ public class OPCPackageTest extends TestCase
     @Test
     public void test_targetCount()
     {
-        assertTrue( opc.col.size() == 10 );
+        assertTrue( opc.getEntryCollection().size() == 10 );
     }
 
 
     @Test
     public void test_entrySizeMatch()
     {
-        assertTrue( opc.col.size() == opc.col.getPartNamesSet().size() );
+        assertTrue( opc.getEntryCollection().size() == opc.getEntryCollection().getPartNamesSet().size() );
     }
 
 
     @Test
     public void test_anEntry()
     {
-        OOXMLTarget t = opc.col.getTargetByName( "/xl/worksheets/sheet1.xml" );
+        OOXMLTarget t = opc.getEntryCollection().getTargetByName( "/xl/worksheets/sheet1.xml" );
         assertTrue( t != null );
     }
 
@@ -81,7 +81,7 @@ public class OPCPackageTest extends TestCase
     @Test
     public void test_entryType()
     {
-        OOXMLTarget t = opc.col.getTargetByName( "/xl/worksheets/sheet1.xml" );
+        OOXMLTarget t = opc.getEntryCollection().getTargetByName( "/xl/worksheets/sheet1.xml" );
         assertTrue( t
                 .getType()
                 .equals(
@@ -91,7 +91,7 @@ public class OPCPackageTest extends TestCase
     @Test
     public void test_mimeType()
     {
-        OOXMLTarget t = opc.col.getTargetByName( "/xl/worksheets/sheet1.xml" );
+        OOXMLTarget t = opc.getEntryCollection().getTargetByName( "/xl/worksheets/sheet1.xml" );
         assertTrue( t
                 .getMimeType()
                 .equals(

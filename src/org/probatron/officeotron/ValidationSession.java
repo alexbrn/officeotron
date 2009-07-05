@@ -23,6 +23,7 @@ public abstract class ValidationSession
 {
     private Submission submission;
     private ValidationReport commentary = new ValidationReport();
+    protected int errCount;
 
 
     public ValidationSession( Submission submission )
@@ -41,6 +42,13 @@ public abstract class ValidationSession
     public ValidationReport getCommentary()
     {
         return commentary;
+    }
+
+    
+
+    public int getErrCount()
+    {
+        return errCount;
     }
 
 
