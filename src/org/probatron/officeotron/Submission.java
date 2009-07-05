@@ -173,4 +173,12 @@ public class Submission
         Store.delete( candidateUuid );
     }
 
+
+    public HttpServletRequest getRequest()
+    {
+        return request;
+    }
+    
+    
+
 }

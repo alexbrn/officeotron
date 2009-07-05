@@ -74,8 +74,12 @@ public class ValidatorServlet extends HttpServlet
             resp.sendError( retCode, sub.getResponseErr() );
             return;
         }
+        
+        ServletContext sc = getServletContext();
+        String schemaUrlBase = sc.getInitParameter( "ooxml-schema-base" );
+        logger.info(  "Using OOXML schemas at: " + schemaUrlBase );
 
-        ValidationSession vs = Utils.autoCreateValidationSession( sub ); // determine ODF or
+        ValidationSession vs = Utils.autoCreateValidationSession( sub, schemaUrlBase ); // determine ODF or
                                                                          // OOXML
         if( vs == null )
         {

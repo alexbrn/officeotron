@@ -190,7 +190,7 @@ public class Utils
     }
 
 
-    public static ValidationSession autoCreateValidationSession( Submission sub )
+    public static ValidationSession autoCreateValidationSession( Submission sub, String schemaUrlBase )
     {
         ValidationSession vs = null;
 
@@ -213,7 +213,11 @@ public class Utils
                 if( ba != null )
                 {
                     logger.info( "Auto detected OOXML package" );
-                    vs = new OOXMLValidationSession( sub, null ); //FIXME
+                    
+                    // we need to know where the OOXML schemas are
+                    // this is set in web.xml                   
+                    
+                    vs = new OOXMLValidationSession( sub, schemaUrlBase ); //FIXME
                 }
             }
         }
