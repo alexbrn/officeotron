@@ -34,6 +34,12 @@
     <param-value>500000</param-value>
     <description>The base URL of the web application</description>
   </context-param>
+  
+  <context-param>
+    <param-name>ooxml-schema-base</param-name>
+    <param-value>http://localhost:8080/officeotron/29500T/</param-value>
+    <description>Where the OOXML schemas can be found</description>
+  </context-param>
 
   <servlet>
     <servlet-name>validator</servlet-name>

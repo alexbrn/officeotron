@@ -39,11 +39,23 @@ public class OOXMLSchemaMap
 
     static
     {
-        OOXMLSchemaMap.addMapping( new OOXMLSchemaMapping( "11.3.2",
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
-                "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments",
-                "wml.xsd" ) );
+        OOXMLSchemaMap.addMapping( new OOXMLSchemaMapping( "15.2.12.1",
+                "application/vnd.openxmlformats-package.core-properties+xml",
+                "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
+                "http://schemas.openxmlformats.org/officedocument/2006/relationships/metadata/core-properties",
+                "opc-coreProperties.xsd" ) );
+        
+        OOXMLSchemaMap.addMapping( new OOXMLSchemaMapping( "15.2.12.2",
+                "application/vnd.openxmlformats-officedocument.custom-properties+xml",
+                "http://schemas.openxmlformats.org/officeDocument/2006/custom-properties",
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+                "shared-documentPropertiesCustom.xsd" ) );
+        
+        OOXMLSchemaMap.addMapping( new OOXMLSchemaMapping( "15.2.12.3",
+                "application/vnd.openxmlformats-officedocument.extended-properties+xml",
+                "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties",
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
+                "shared-documentPropertiesExtended.xsd" ) );
 
         OOXMLSchemaMap.addMapping( new OOXMLSchemaMapping( "11.3.3",
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
