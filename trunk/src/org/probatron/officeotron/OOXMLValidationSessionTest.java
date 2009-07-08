@@ -28,8 +28,8 @@ import org.junit.Test;
 
 public class OOXMLValidationSessionTest extends TestCase
 {
-    OPCPackage opc;
-    OOXMLValidationSession ovs;
+    OPCPackage opc, opc2;
+    OOXMLValidationSession ovs, ovs2;
 
     static
     {
@@ -53,16 +53,24 @@ public class OOXMLValidationSessionTest extends TestCase
         opc = new OPCPackage( "file:etc/test-data/maria.xlsx" );
         ovs = new OOXMLValidationSession(
                 new DummySubmission( "file:etc/test-data/maria.xlsx" ),
-                "file:etc/schema/29500T/" );
-    }
+                "file:etc/schema/29500T/" );  
+        
+        opc2 = new OPCPackage( "file:etc/test-data/torture.pptx" );
+        ovs2 = new OOXMLValidationSession(
+                new DummySubmission( "file:etc/test-data/torture.pptx" ),
+                "file:etc/schema/29500T/" );  }
 
 
     @Test
     public void test_packageIntegrity()
     {
         opc.process();
+        opc2.process();
         ovs.checkRelationships( opc );
-        assertTrue( ovs.getErrCount() == 1 );
+        assertTrue( ovs.getErrCount() == 2 );
+        
+        ovs2.checkRelationships( opc2 );
+        assertTrue( ovs.getErrCount() == 2 );
     }
 
 }

@@ -87,7 +87,8 @@ public class OOXMLValidationSession extends ValidationSession
                         "ERROR",
                         "Entry with MIME type \"" + mt
                                 + "\" has unrecognized relationship type \"" + t.getType()
-                                + "\" (see ISO/IEC 29500-1:2008, Clause " + osm.getClause() +")");
+                                + "\" (see ISO/IEC 29500-1:2008, Clause " + osm.getClause()
+                                + ")" );
             }
 
         }
@@ -119,8 +120,15 @@ public class OOXMLValidationSession extends ValidationSession
             logger.trace( "Validating entry of MIME type: " + mt );
 
             OOXMLSchemaMapping osm = OOXMLSchemaMap.getMappingForContentType( mt );
+            if( osm == null )
+            {
+                this.getCommentary().addComment( "Cannot determine schema for this part" );
 
-            validateTarget( t, osm );
+            }
+            else
+            {
+                validateTarget( t, osm );
+            }
 
         }
 

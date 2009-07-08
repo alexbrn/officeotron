@@ -29,6 +29,7 @@ import org.junit.Test;
 public class OPCPackageTest extends TestCase
 {
     OPCPackage opc;
+    OPCPackage opc2;
 
     static
     {
@@ -51,7 +52,10 @@ public class OPCPackageTest extends TestCase
     protected void setUp() throws Exception
     {
         opc = new OPCPackage( "file:etc/test-data/maria.xlsx" );
+        opc2 = new OPCPackage( "file:etc/test-data/maria.xlsx" );
         opc.process();
+        opc2 = new OPCPackage( "file:etc/test-data/torture.pptx" );
+        opc2.process();
         super.setUp();
     }
 
@@ -60,6 +64,7 @@ public class OPCPackageTest extends TestCase
     public void test_targetCount()
     {
         assertTrue( opc.getEntryCollection().size() == 10 );
+        assertTrue( opc2.getEntryCollection().size() == 10);
     }
 
 
@@ -67,6 +72,7 @@ public class OPCPackageTest extends TestCase
     public void test_entrySizeMatch()
     {
         assertTrue( opc.getEntryCollection().size() == opc.getEntryCollection().getPartNamesSet().size() );
+        assertTrue( opc2.getEntryCollection().size() == opc2.getEntryCollection().getPartNamesSet().size() );
     }
 
 
@@ -74,6 +80,8 @@ public class OPCPackageTest extends TestCase
     public void test_anEntry()
     {
         OOXMLTarget t = opc.getEntryCollection().getTargetByName( "/xl/worksheets/sheet1.xml" );
+        assertTrue( t != null );
+        t = opc2.getEntryCollection().getTargetByName( "/ppt/slides/slide1.xml" );
         assertTrue( t != null );
     }
 
@@ -86,6 +94,11 @@ public class OPCPackageTest extends TestCase
                 .getType()
                 .equals(
                         "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" ) );
+        t = opc2.getEntryCollection().getTargetByName( "/ppt/slides/slide1.xml" );
+        assertTrue( t
+                .getType()
+                .equals(
+                        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" ) );
     }
     
     @Test
@@ -96,6 +109,11 @@ public class OPCPackageTest extends TestCase
                 .getMimeType()
                 .equals(
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" ) );
+        t = opc2.getEntryCollection().getTargetByName( "/ppt/slides/slide1.xml" );
+        assertTrue( t
+                .getMimeType()
+                .equals(
+                        "application/vnd.openxmlformats-officedocument.presentationml.slide+xml" ) );
     }
 
 }
