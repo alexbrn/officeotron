@@ -45,6 +45,7 @@ public class OOXMLValidationSession extends ValidationSession
     public void validate()
     {
         OPCPackage opc = new OPCPackage( this.getSubmission().getCandidateUrl() );
+        opc.process();
         checkRelationships( opc );
 
         if( errCount > 0 )
@@ -58,7 +59,7 @@ public class OOXMLValidationSession extends ValidationSession
     public void checkRelationships( OPCPackage opc )
     {
         logger.trace( "Beginning package integrity test" );
-        this.getCommentary().addComment( "Checking Package relationship integrity" );
+        this.getCommentary().addComment( "Checking OPC Package ..." );
         this.getCommentary().incIndent();
 
         logger.trace( "Collection size: " + opc.getEntryCollection().size() );
@@ -78,7 +79,7 @@ public class OOXMLValidationSession extends ValidationSession
                 continue;
             }
 
-            if( ! t.getType().equals( osm.getRelType() ) )
+            if( !t.getType().equals( osm.getRelType() ) )
             {
                 logger.debug( "Relationship type mismatch" );
                 this.errCount++;
@@ -86,80 +87,116 @@ public class OOXMLValidationSession extends ValidationSession
                         "ERROR",
                         "Entry with MIME type \"" + mt
                                 + "\" has unrecognized relationship type \"" + t.getType()
-                                + "\"" );
+                                + "\" (see ISO/IEC 29500-1:2008, Clause " + osm.getClause() +")");
             }
 
-            validateTarget( t, osm );
+        }
+
+        if( this.errCount > 0 )
+        {
+            this.getCommentary().addComment(
+                    "ERROR",
+                    "" + this.errCount + " problem" + ( this.errCount > 1 ? "s" : "" )
+                            + " found with OPC package" );
+
+        }
+        else
+        {
+            this.getCommentary().addComment( "No problems found with OPC package" );
 
         }
 
         this.getCommentary().decIndent();
+
+        this.getCommentary().addComment(
+                "Validating " + opc.getEntryCollection().size() + " parts ..." );
+        for( int i = 0; i < opc.getEntryCollection().size(); i++ )
+        {
+
+            OOXMLTarget t = opc.getEntryCollection().get( i );
+            String mt = t.getMimeType();
+
+            logger.trace( "Validating entry of MIME type: " + mt );
+
+            OOXMLSchemaMapping osm = OOXMLSchemaMap.getMappingForContentType( mt );
+
+            validateTarget( t, osm );
+
+        }
 
     }
 
 
     void validateTarget( OOXMLTarget t, OOXMLSchemaMapping osm )
     {
-        String schemaName = osm.getSchemaName();
-        getCommentary().addComment( "Validating package item \"" + t.getQPartname() + "\"" );
-        getCommentary().incIndent();
-
-        if( schemaName == null || schemaName.length() == 0 )
+        synchronized( OOXMLValidationSession.class )
         {
-            this.getCommentary().addComment(
-                    "No schema known to validate content of type: " + osm.getContentType() );
+            String schemaName = osm.getSchemaName();
+            getCommentary().addComment(
+                    "Validating part \"" + t.getQPartname() + "\" using schema \""
+                            + osm.getSchemaName() + "\" ..." );
+            getCommentary().incIndent();
+
+            if( schemaName == null || schemaName.length() == 0 )
+            {
+                this.getCommentary().addComment(
+                        "No schema known to validate content of type: " + osm.getContentType() );
+            }
+            else
+            {
+
+                try
+                {
+                    CommentatingErrorHandler h = new CommentatingErrorHandler( this
+                            .getCommentary() );
+                    XMLReader parser = getConfiguredParser( osm, h );
+
+                    String packageUrl = this.getSubmission().getCandidateUrl();
+
+                    String url = "jar:" + packageUrl + "!" + t.getQPartname();
+                    logger
+                            .debug( "Validating: " + url + " using schema "
+                                    + osm.getSchemaName() );
+
+                    parser.parse( url );
+
+                    if( h.getInstanceErrCount() > 0 )
+                    {
+                        getCommentary().addComment(
+                                "\"" + t.getQPartname() + "\" contains "
+                                        + h.getInstanceErrCount() + " validity error"
+                                        + ( h.getInstanceErrCount() > 1 ? "s" : "" ) );
+                        errCount += h.getInstanceErrCount();
+                    }
+                    else
+                    {
+                        getCommentary().addComment(
+                                "\"" + t.getQPartname() + "\" is schema-valid" );
+                    }
+                    if( h.getInstanceErrCount() > CommentatingErrorHandler.THRESHOLD )
+                    {
+                        getCommentary()
+                                .addComment(
+                                        "(<i>"
+                                                + ( h.getInstanceErrCount() - CommentatingErrorHandler.THRESHOLD )
+                                                + " error(s) omitted for the sake of brevity</i>)" );
+                    }
+
+                }
+                catch( SAXException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                catch( IOException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+            getCommentary().decIndent();
         }
-        else
-        {
-
-            try
-            {
-                CommentatingErrorHandler h = new CommentatingErrorHandler( this.getCommentary() );
-                XMLReader parser = getConfiguredParser( osm, h );
-
-                String packageUrl = this.getSubmission().getCandidateUrl();
-
-                String url = "jar:" + packageUrl + "!" + t.getQPartname();
-                logger.debug( "Validating: " + url );
-
-                parser.parse( url );
-
-                if( h.getInstanceErrCount() > 0 )
-                {
-                    getCommentary().addComment(
-                            "\"" + t.getQPartname() + "\" contains " + h.getInstanceErrCount()
-                                    + " validity error"
-                                    + ( h.getInstanceErrCount() > 1 ? "s" : "" ) );
-                    errCount += h.getInstanceErrCount();
-                }
-                else
-                {
-                    getCommentary().addComment( "\"" + t.getQPartname() + "\" is schema-valid" );
-                }
-                if( h.getInstanceErrCount() > CommentatingErrorHandler.THRESHOLD )
-                {
-                    getCommentary()
-                            .addComment(
-                                    "(<i>"
-                                            + ( h.getInstanceErrCount() - CommentatingErrorHandler.THRESHOLD )
-                                            + " error(s) omitted for the sake of brevity</i>)" );
-                }
-
-            }
-            catch( SAXException e )
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch( IOException e )
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        getCommentary().decIndent();
-
     }
 
 

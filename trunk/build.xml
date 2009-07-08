@@ -24,7 +24,7 @@
 	<description>Office-o-tron Build</description>
 
 	<!-- set global properties for this build -->
-	<property name="version" value="0.2.1" />
+	<property name="version" value="0.3.0" />
 	<property name="src" location="src" />
 	<property name="build" location="build" />
 	<property name="dist" location="dist/officeotron" />
@@ -46,6 +46,7 @@
 				<pathelement location="${lib}/commons-fileupload-1.2.1.jar" />
 				<pathelement location="${lib}/log4j-1.2.15.jar" />
 				<pathelement location="${lib}/jing.jar" />
+				<pathelement location="${lib}/junit-4.6.jar" />
 			</classpath>
 		</javac>
 	</target>
