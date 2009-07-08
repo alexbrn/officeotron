@@ -490,7 +490,7 @@ public class OOXMLSchemaMap
                         "14.2.9",
                         "application/vnd.openxmlformats-officedocument.presentationml.tableStyles+xml",
                         "http://schemas.openxmlformats.org/drawingml/2006/main",
-                        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/themeOverride",
+                        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles",
                         "dml-main.xsd" ) );
 
         OOXMLSchemaMap

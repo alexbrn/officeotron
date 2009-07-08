@@ -122,7 +122,7 @@ public class OOXMLValidationSession extends ValidationSession
             OOXMLSchemaMapping osm = OOXMLSchemaMap.getMappingForContentType( mt );
             if( osm == null )
             {
-                this.getCommentary().addComment( "Cannot determine schema for this part" );
+                this.getCommentary().addComment( "Cannot determine schema for this part (\"" + t.getQPartname() + "\")" );
 
             }
             else
