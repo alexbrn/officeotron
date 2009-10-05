@@ -3,18 +3,18 @@
  * 
  * Office-o-tron - a web-based office document validator for Java(tm)
  * 
- * Copyright (C) 2009 Griffin Brown Digital Publishing Ltd
+ * Copyright (c) 2009 Griffin Brown Digital Publishing Ltd.
  * 
- * This program is free software: you can redistribute it and/or modify it under the terms of
- * the GNU Affero General Public License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
+ * All rights reserved world-wide.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
- * the GNU Affero General Public License for more details.
+ * The contents of this file are subject to the Mozilla Public License Version 1.1 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at http://www.mozilla.org/MPL/MPL-1.1.html
  * 
- * You should have received a copy of the GNU Affero General Public License along with this
- * program. If not, see <http://www.gnu.org/licenses/>.
+ * Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY
+ * OF ANY KIND, either express or implied. See the License for the specific language governing
+ * rights and limitations under the License.
+ * 
  */
 
 package org.probatron.officeotron;
@@ -103,7 +103,11 @@ public class OOXMLTarget
     public String getQPartname()
     {
         String base = this.hostPartEntryName.replaceFirst( "_rels/.*$", "" );
-        String s = "/" +  base + getName();
+        String s = base + getName();
+        if( !s.startsWith( "/" ) )
+        {
+            s = "/" + s; // OPC spec seems ambiguous on whether leading "/" is required
+        }
         return s;
     }
 
