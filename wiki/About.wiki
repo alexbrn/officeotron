@@ -7,7 +7,7 @@ The Office-o-tron validates ODF or OOXML documents using two validation layers:
  * schema validation
  * programmatic application of normative constraints specified in the standards.
 
-A live version of office-o-tron is generally available [http://www.probatron.org:8080/officeotron/officeotron.html here], and this usually uses the most recent code from the source repository, which is often more advanced than the most recent numbered release.
+_A live version of office-o-tron is generally available [http://www.probatron.org:8080/officeotron/officeotron.html here], and this usually uses the most recent code from the source repository, which is often more advanced than the most recent numbered release_.
 
 = Schema Validation =
 
