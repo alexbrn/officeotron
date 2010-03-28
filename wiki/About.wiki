@@ -19,7 +19,7 @@ The ODF schemas (certainly prior to version 1.2) exhibit a common construction e
 
 == OOXML Schemas ==
 
-OOXML documents are validated against the Transitional variant XSD schemas of ISO/IEC 29500. The validator used is Apache Xerces-J. Since XSD schemas are inherently non-interoperable, the suggested changes of the schema comments are implemented to make them work correctly with this validator.
+OOXML documents are validated against the Transitional variant XSD schemas of ISO/IEC 29500:2008. The validator used is Apache Xerces-J as supplied with the Java 1.6 SDK. Since XSD schemas are inherently non-interoperable, the suggested changes of the schema comments are implemented to make them work correctly with this validator.
 
 = Programmatic Validation =
 
