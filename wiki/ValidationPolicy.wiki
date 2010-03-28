@@ -12,7 +12,7 @@ The Office-o-tron validates ODF or OOXML documents using two validation layers:
 
 The appropriate ODF schema is selected using the version attribute on root elements of XML documents.
 
-The ODF schemas (certainly prior to version 1.2) exhibit a common construction error[1] that occurs when RELAX NG schemas use ID/IDREF types. This is disregarded for the purposes of validation.
+The ODF schemas (certainly prior to version 1.2) exhibit a common construction error{{{[1]}}} that occurs when RELAX NG schemas use ID/IDREF types. This is disregarded for the purposes of validation.
 
 == OOXML Schemas ==
 
