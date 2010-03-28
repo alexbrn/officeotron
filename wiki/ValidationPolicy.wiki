@@ -21,4 +21,4 @@ OOXML documents are validated against the Transitional variant XSD schemas of IS
 
 = References =
 
- # see [http://blog.jclark.com/2009/01/relax-ng-and-xmlid.html James Clark's article here] for details.
+{{{[1]}}} see [http://blog.jclark.com/2009/01/relax-ng-and-xmlid.html James Clark's article here] for details.
