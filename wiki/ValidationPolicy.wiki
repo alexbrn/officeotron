@@ -1,13 +1,15 @@
-#summary Validation Policy
+#summary How the Office-o-tron validates your documents
 
-= Introduction =
+= General =
 
-Add your content here.
+The Office-o-tron validates ODF or OOXML documents using two validation layers:
+
+ * schema validation
+ * programmatic application of normative constraints specified in the standards.
 
 
-= Details =
+= ODF Schemas =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The appropriate ODF schema is selected using the version attribute on root elements of XML documents.
+
+The ODF schemas (certainly prior to version 1.2) exhibit a common construction error that occurs when RELAX NG schemas use ID/IDREF types. This is disregarded for the purposes of validation.
