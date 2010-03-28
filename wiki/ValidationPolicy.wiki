@@ -18,4 +18,4 @@ The ODF schemas (certainly prior to version 1.2) exhibit a common construction e
 
 OOXML documents are validated against the Transitional variant XSD schemas of ISO/IEC 29500. The validator used is Apache Xerces-J. Since XSD schemas are inherently non-interoperable, the suggested changes of the schema comments are implemented to make them work correctly with this validator.
 
-[1] see [http://blog.jclark.com/2009/01/relax-ng-and-xmlid.html James Clark's article here] for details.
+ # see [http://blog.jclark.com/2009/01/relax-ng-and-xmlid.html James Clark's article here] for details.
