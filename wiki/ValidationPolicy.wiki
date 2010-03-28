@@ -8,12 +8,14 @@ The Office-o-tron validates ODF or OOXML documents using two validation layers:
  * programmatic application of normative constraints specified in the standards.
 
 
-= ODF Schemas =
+== ODF Schemas ==
 
 The appropriate ODF schema is selected using the version attribute on root elements of XML documents.
 
-The ODF schemas (certainly prior to version 1.2) exhibit a common construction error that occurs when RELAX NG schemas use ID/IDREF types. This is disregarded for the purposes of validation.
+The ODF schemas (certainly prior to version 1.2) exhibit a common construction error[1] that occurs when RELAX NG schemas use ID/IDREF types. This is disregarded for the purposes of validation.
 
-= OOXML Schemas =
+== OOXML Schemas ==
 
 OOXML documents are validated against the Transitional variant XSD schemas of ISO/IEC 29500. The validator used is Apache Xerces-J. Since XSD schemas are inherently non-interoperable, the suggested changes of the schema comments are implemented to make them work correctly with this validator.
+
+[1] see [http://blog.jclark.com/2009/01/relax-ng-and-xmlid.html James Clark's article here] for details.
