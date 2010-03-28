@@ -23,6 +23,10 @@ OOXML documents are validated against the Transitional variant XSD schemas of IS
 
 Programmatic validation is carried out in Java code. Care is take to maintain a streaming approach at all times to ensure performance.
 
+== ZIP validation ==
+
+The Office-o-tron inspects the construction of the ZIP archive behind an office document and carried out tests for provisions of the spec at the bit and byte level.
+
 == Contradictory Constraints ==
 
 Where the standard contains two or more contradictory provisions *all* of those provisions are tested. The standard is in this case impossible to implement since no document can exist that satisfies its provisions. The validator thus accurately exposes this phenomenon.
