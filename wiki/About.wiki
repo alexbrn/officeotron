@@ -19,6 +19,8 @@ Using a useful tool like [http://en.wikipedia.org/wiki/CURL cURL], this can be d
 curl --data-binary @mydocument.docx http://www.probatron.org:8080/officeotron/validator
 }}}
 
+The response is a validation report in XHTML.
+
 Feel free to help yourself to this functionality at the above URL!
  
 = Schema Validation =
