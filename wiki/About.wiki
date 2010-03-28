@@ -13,7 +13,7 @@ _A live version of office-o-tron is generally available [http://www.probatron.or
 
 As of version 0.2.0 Office-o-tron supports validation of office documents POSTED to it.
 
-Using a useful tool like cURL, this can be done on the command line as follows:
+Using a useful tool like [http://en.wikipedia.org/wiki/CURL cURL], this can be done on the command line as follows:
 
 {{{
 curl --data-binary @mydocument.docx http://www.probatron.org:8080/officeotron/validator
