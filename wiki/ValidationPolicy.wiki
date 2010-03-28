@@ -7,6 +7,7 @@ The Office-o-tron validates ODF or OOXML documents using two validation layers:
  * schema validation
  * programmatic application of normative constraints specified in the standards.
 
+= Schema Validation =
 
 == ODF Schemas ==
 
@@ -17,6 +18,14 @@ The ODF schemas (certainly prior to version 1.2) exhibit a common construction e
 == OOXML Schemas ==
 
 OOXML documents are validated against the Transitional variant XSD schemas of ISO/IEC 29500. The validator used is Apache Xerces-J. Since XSD schemas are inherently non-interoperable, the suggested changes of the schema comments are implemented to make them work correctly with this validator.
+
+= Programmatic Validation =
+
+Programmatic validation is carried out in Java code. Care is take to maintain a streaming approach at all times to ensure performance.
+
+== Contradictory Constraints ==
+
+Where the standard contains two or more contradictory provisions *all* of those provisions are tested. The standard is in this case impossible to implement since no document can exist that satisfies its provisions. The validator thus accurately exposes this phenomenon.
 
 
 = References =
